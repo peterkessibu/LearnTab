@@ -1,101 +1,75 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import Link from 'next/link'
+import { useUser } from '@clerk/nextjs'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+
+export default function HomePage() {
+  const { isSignedIn, user } = useUser()
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div className="flex flex-col min-h-screen">
+      <Navbar />
+      <div className="flex-grow container mx-auto px-6 py-12 ">
+        <h2 className="text-4xl font-bold text-center mb-12">Welcome to LearnTab</h2>
+        <p className="text-center text-lg mb-8">Boost your learning with flashcards designed for every subject!</p>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+        {/* 6 Cards explaining the use of flashcards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-black">
+          <div className="bg-white shadow-md rounded-lg p-6 text-center">
+            <h3 className="text-2xl font-semibold mb-4">Active Learning</h3>
+            <p>Flashcards promote active recall, which is proven to be one of the most effective learning techniques.</p>
+          </div>
+
+          <div className="bg-white shadow-md rounded-lg p-6 text-center">
+            <h3 className="text-2xl font-semibold mb-4">Math</h3>
+            <p>Master complex formulas and equations with math flashcards. Reinforce important mathematical concepts through repetition.</p>
+          </div>
+
+          <div className="bg-white shadow-md rounded-lg p-6 text-center">
+            <h3 className="text-2xl font-semibold mb-4">Science</h3>
+            <p>Flashcards help in memorizing important scientific facts, such as biological processes and chemical reactions.</p>
+          </div>
+
+          <div className="bg-white shadow-md rounded-lg p-6 text-center">
+            <h3 className="text-2xl font-semibold mb-4">Language Learning</h3>
+            <p>Learn new vocabulary, grammar rules, and phrases efficiently by using flashcards for language learning.</p>
+          </div>
+
+          <div className="bg-white shadow-md rounded-lg p-6 text-center">
+            <h3 className="text-2xl font-semibold mb-4">History</h3>
+            <p>Memorize historical dates, events, and figures with flashcards, which makes learning history more engaging and effective.</p>
+          </div>
+
+          <div className="bg-white shadow-md rounded-lg p-6 text-center">
+            <h3 className="text-2xl font-semibold mb-4">Exam Preparation</h3>
+            <p>Prepare for your exams by using flashcards for quick review sessions and focused study breaks.</p>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Sign Up / Sign In Prompt */}
+        {!isSignedIn && (
+          <div className="text-center mt-12">
+            <p className="text-xl">Join us today to create your own flashcards!</p>
+            <div className="mt-6 space-x-4">
+              <Link href="/sign-up" className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Sign Up</Link>
+              <Link href="/sign-in" className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600">Sign In</Link>
+            </div>
+          </div>
+        )}
+
+        {/* User-specific content */}
+        {isSignedIn && (
+          <div className="text-center mt-12">
+            <p className="text-xl">Welcome back, {user.firstName}!</p>
+            <Link href="/flashcards" className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">View Your Flashcards</Link>
+          </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      <Footer />
     </div>
-  );
+  )
 }
