@@ -9,14 +9,19 @@ export default function HomePage() {
   const { isSignedIn, user } = useUser()
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col bg-[#dedeff]">
       <Navbar />
       <div className="flex-grow container mx-auto px-6 py-12 ">
         <h2 className="text-4xl font-bold text-center mb-12">Welcome to LearnTab</h2>
-        <p className="text-center text-lg mb-8">Boost your learning with flashcards designed for every subject!</p>
-
+           {isSignedIn && (
+          <div className="text-center m-4">
+            <p className="text-xl">Welcome back, {user.firstName}!</p>
+            <p className="text-center text-lg mb-8">Boost your learning with flashcards designed for every subject!</p>
+            <Link href="/generate" className="inline-block bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">View Your Flashcards</Link>
+          </div>
+        )}
         {/* 6 Cards explaining the use of flashcards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-black">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-[#0b1e36]">
           <div className="bg-white shadow-md rounded-lg p-6 text-center">
             <h3 className="text-2xl font-semibold mb-4">Active Learning</h3>
             <p>Flashcards promote active recall, which is proven to be one of the most effective learning techniques.</p>
@@ -59,13 +64,6 @@ export default function HomePage() {
           </div>
         )}
 
-        {/* User-specific content */}
-        {isSignedIn && (
-          <div className="text-center mt-12">
-            <p className="text-xl">Welcome back, {user.firstName}!</p>
-            <Link href="/flashcards" className="mt-4 inline-block bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">View Your Flashcards</Link>
-          </div>
-        )}
       </div>
 
       {/* Footer */}

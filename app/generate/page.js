@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useUser } from '@clerk/clerk-react'
 import { doc, collection, getDoc, writeBatch } from 'firebase/firestore'
-import { db } from '../firebase' // Adjust the import path to your Firebase config
+import { db } from '../firebase' 
+import Header from '../components/Header'
 
 export default function Generate() {
     const [text, setText] = useState('')
@@ -90,8 +91,10 @@ export default function Generate() {
     }
 
     return (
-        <div className="max-w-4xl mx-auto py-8 px-4">
-            <h1 className="text-4xl font-bold mb-4">Generate Flashcards</h1>
+        <div className="w-screen">
+            <Header />
+            <div className='mx-auto py-8 px-4'>
+            <h1 className="text-4xl font-bold mb-4 mt-6">Generate Flashcards</h1>
             <textarea
                 value={text}
                 onChange={(e) => setText(e.target.value)}
@@ -166,6 +169,7 @@ export default function Generate() {
                     </div>
                 </div>
             )}
+            </div>
         </div>
     )
 }
