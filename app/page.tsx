@@ -12,17 +12,20 @@ export default function HomePage() {
     <div className="flex flex-col bg-[#dedeff]">
       <Navbar />
       <div className="flex-grow container mx-auto px-6 py-12">
-        <h2 className="text-4xl font-bold text-center mb-12">Welcome to LearnTab</h2>
+        <h2 className="text-4xl font-bold text-center mb-8">Welcome to LearnTab</h2>
         
         {isSignedIn ? (
           <div className="text-center m-4">
             <p className="text-xl">Welcome back, {user.firstName}!</p>
-            <p className="text-center text-lg mb-8">Boost your learning with flashcards designed for every subject!</p>
+            <p className="text-center text-lg mb-4">Boost your learning with flashcards designed for every subject!</p>
             <Link href="/generate" className="inline-block bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">View Your Flashcards</Link>
           </div>
         ) : (
-          <div className="text-center mt-12">
+          <div className="text-center my-6 ">
             <p className="text-xl">Join us today to create your own flashcards!</p>
+            <button>
+              <Link href="/sign-up" className="inline-block bg-blue-600 mt-2 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Get started</Link>
+            </button>
           </div>
         )}
 

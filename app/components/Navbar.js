@@ -27,11 +27,8 @@ export default function Navbar() {
                     </div>
                 ) : (
                     <>
-                        <Link href="/sign-in" className="bg-blue-600 text-white py-1 px-4 rounded-lg hover:bg-blue-700">
+                        <Link href="/sign-in" className="bg-white text-[#0d0c47] py-1 px-4 rounded-lg mx-4">
                             Sign In
-                        </Link>
-                        <Link href="/sign-up" className="bg-green-600 text-white py-1 px-4 rounded-lg hover:bg-green-700">
-                            Sign Up
                         </Link>
                     </>
                 )}
