@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useUser } from '@clerk/nextjs'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { db } from '../firebase'
 import { doc, collection, getDoc, getDocs, setDoc, writeBatch } from 'firebase/firestore'
 
@@ -12,7 +12,6 @@ export default function Flashcard() {
     const [setName, setSetName] = useState('')
     const [dialogOpen, setDialogOpen] = useState(false)
     const [flipped, setFlipped] = useState({})
-    const router = useRouter()
     const searchParams = useSearchParams()
     const search = searchParams.get('id')
 

@@ -85,7 +85,7 @@ export default function Generate() {
     }
 
     return (
-        <div className="w-screen h-screen m-auto items-center bg-[#dedeff]">
+        <div className="w-screen min-h-screen m-auto items-center bg-[#dedeff]">
             <Header />
             <div className='mx-auto py-8 px-4 items-center justify-center'>
                 <div className="flex justify-center items-center">
