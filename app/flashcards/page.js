@@ -7,7 +7,7 @@ import { db } from '../firebase'
 import { doc, collection, getDoc, getDocs, setDoc, writeBatch } from 'firebase/firestore'
 
 export default function Flashcard() {
-    const { isLoaded, isSignedIn, user } = useUser()
+    const { user } = useUser()
     const [flashcards, setFlashcards] = useState([])
     const [setName, setSetName] = useState('')
     const [dialogOpen, setDialogOpen] = useState(false)
@@ -19,13 +19,14 @@ export default function Flashcard() {
     useEffect(() => {
         async function getFlashcards() {
             if (!user) return
-            const docRef = doc(collection(db, 'users'), user.id)
-            const docSnap = await getDoc(docRef)
-            if (docSnap.exists()) {
-                const collections = docSnap.data().flashcards || []
+            const userDocRef = doc(db, 'users', user.primaryEmailAddressId) // Use primaryEmailAddressId
+            const userDocSnap = await getDoc(userDocRef)
+
+            if (userDocSnap.exists()) {
+                const collections = userDocSnap.data().flashcards || []
                 setFlashcards(collections)
             } else {
-                await setDoc(docRef, { flashcards: [] })
+                await setDoc(userDocRef, { flashcards: [] }) // Initialize if no document exists
             }
         }
         getFlashcards()
@@ -35,7 +36,7 @@ export default function Flashcard() {
         async function getFlashcard() {
             if (!search || !user) return
 
-            const colRef = collection(doc(collection(db, 'users'), user.id), search)
+            const colRef = collection(doc(db, 'users', user.primaryEmailAddressId), 'flashcardSets', search)
             const docs = await getDocs(colRef)
             const flashcards = []
             docs.forEach((doc) => {
@@ -63,7 +64,7 @@ export default function Flashcard() {
         }
 
         try {
-            const userDocRef = doc(collection(db, 'users'), user.id)
+            const userDocRef = doc(db, 'users', user.primaryEmailAddressId) // Use primaryEmailAddressId
             const userDocSnap = await getDoc(userDocRef)
 
             const batch = writeBatch(db)

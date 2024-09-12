@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 import { useUser } from '@clerk/clerk-react'
-import { doc, collection, getDoc, writeBatch } from 'firebase/firestore'
-import { db } from '../firebase' 
+import { doc, collection, writeBatch } from 'firebase/firestore'
+import { db } from '../firebase'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 
@@ -13,7 +13,8 @@ export default function Generate() {
     const [setName, setSetName] = useState('')
     const [dialogOpen, setDialogOpen] = useState(false)
 
-    const { user } = useUser() // Retrieve user from Clerk
+    const { user } = useUser()
+    console.log(user)
 
     const handleSubmit = async () => {
         if (!text.trim()) {
@@ -49,7 +50,6 @@ export default function Generate() {
         }
     }
 
-
     const handleOpenDialog = () => setDialogOpen(true)
     const handleCloseDialog = () => setDialogOpen(false)
 
@@ -64,20 +64,13 @@ export default function Generate() {
                 throw new Error('User not authenticated')
             }
 
-            const userDocRef = doc(collection(db, 'users'), user.id)
-            const userDocSnap = await getDoc(userDocRef)
+            const userDocRef = doc(db, 'users', user.id) // Reference to user document
+            const historyCollectionRef = collection(userDocRef, 'history') // Reference to the 'history' collection
 
+            const setDocRef = doc(historyCollectionRef, setName) // Reference to the document in 'history' with the provided name
             const batch = writeBatch(db)
 
-            if (userDocSnap.exists()) {
-                const userData = userDocSnap.data()
-                const updatedSets = [...(userData.flashcardSets || []), { name: setName }]
-                batch.update(userDocRef, { flashcardSets: updatedSets })
-            } else {
-                batch.set(userDocRef, { flashcardSets: [{ name: setName }] })
-            }
-
-            const setDocRef = doc(collection(userDocRef, 'flashcardSets'), setName)
+            // Write flashcard set to the 'history' collection
             batch.set(setDocRef, { flashcards })
 
             await batch.commit()
@@ -114,67 +107,66 @@ export default function Generate() {
                     </div>
                 </div>
 
-
-            {/* Flashcard display */}
-            {flashcards.length > 0 && (
-                <div className="mt-8">
-                    <h2 className="text-2xl font-semibold mb-4">Generated Flashcards</h2>
-                    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                        {flashcards.map((flashcard, index) => (
-                            <div key={index} className="bg-white border border-gray-300 rounded-lg shadow-md p-4">
-                                <div className="mb-4">
-                                    <h3 className="text-lg font-semibold">Front:</h3>
-                                    <p>{flashcard.front}</p>
+                {/* Flashcard display */}
+                {flashcards.length > 0 && (
+                    <div className="mt-8">
+                        <h2 className="text-2xl font-semibold mb-4">Generated Flashcards</h2>
+                        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                            {flashcards.map((flashcard, index) => (
+                                <div key={index} className="bg-white border border-gray-300 rounded-lg shadow-md p-4">
+                                    <div className="mb-4">
+                                        <h3 className="text-lg font-semibold">Front:</h3>
+                                        <p>{flashcard.front}</p>
+                                    </div>
+                                    <div>
+                                        <h3 className="text-lg font-semibold">Back:</h3>
+                                        <p>{flashcard.back}</p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3 className="text-lg font-semibold">Back:</h3>
-                                    <p>{flashcard.back}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
-            {flashcards.length > 0 && (
-                <div className="mt-4 flex justify-center">
-                    <button
-                        className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
-                        onClick={handleOpenDialog}
-                    >
-                        Save Flashcards
-                    </button>
-                </div>
-            )}
-            {dialogOpen && (
-                <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
-                    <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
-                        <h2 className="text-lg font-semibold">Save Flashcard Set</h2>
-                        <p className="mt-2 text-gray-600">Please enter a name for your flashcard set.</p>
-                        <input
-                            autoFocus
-                            type="text"
-                            placeholder="Set Name"
-                            value={setName}
-                            onChange={(e) => setSetName(e.target.value)}
-                            className="mt-2 w-full p-2 border border-gray-300 rounded-md"
-                        />
-                        <div className="mt-4 flex justify-end space-x-2">
-                            <button
-                                onClick={handleCloseDialog}
-                                className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={saveFlashcards}
-                                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                            >
-                                Save
-                            </button>
+                            ))}
                         </div>
                     </div>
-                </div>
-            )}
+                )}
+                {flashcards.length > 0 && (
+                    <div className="mt-4 flex justify-center">
+                        <button
+                            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                            onClick={handleOpenDialog}
+                        >
+                            Save Flashcards
+                        </button>
+                    </div>
+                )}
+                {dialogOpen && (
+                    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
+                        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                            <h2 className="text-lg font-semibold">Save Flashcard Set</h2>
+                            <p className="mt-2 text-gray-600">Please enter a name for your flashcard set.</p>
+                            <input
+                                autoFocus
+                                type="text"
+                                placeholder="Set Name"
+                                value={setName}
+                                onChange={(e) => setSetName(e.target.value)}
+                                className="mt-2 w-full p-2 border border-gray-300 rounded-md"
+                            />
+                            <div className="mt-4 flex justify-end space-x-2">
+                                <button
+                                    onClick={handleCloseDialog}
+                                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={saveFlashcards}
+                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
             <Footer />
         </div>
