@@ -4,6 +4,7 @@
 import { SignIn, useAuth } from '@clerk/nextjs'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function SignInPage() {
     const { isSignedIn } = useAuth()
@@ -19,8 +20,8 @@ export default function SignInPage() {
         <div className="flex flex-col min-h-screen w-full bg-[#dedeff]">
             {/* Navbar */}
             <nav className="w-full">
-                <div className="bg-[#003f8f] p-4 w-full flex justify-between items-center">
-                    <h1 className="text-white text-2xl font-bold">LearnTab</h1>
+                <div className="bg-[#003f8f] p-4 w-full flex justify-center">
+                    <Link href={'/'} className="text-white text-2xl font-bold">LearnTab</Link>
                 </div>
             </nav>
             <div className="flex flex-col justify-center items-center p-4">
