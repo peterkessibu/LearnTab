@@ -11,15 +11,21 @@ export default function HomePage() {
   return (
     <div className="flex flex-col bg-[#dedeff]">
       <Navbar />
-      <div className="flex-grow container mx-auto px-6 py-12 ">
+      <div className="flex-grow container mx-auto px-6 py-12">
         <h2 className="text-4xl font-bold text-center mb-12">Welcome to LearnTab</h2>
-           {isSignedIn && (
+        
+        {isSignedIn ? (
           <div className="text-center m-4">
             <p className="text-xl">Welcome back, {user.firstName}!</p>
             <p className="text-center text-lg mb-8">Boost your learning with flashcards designed for every subject!</p>
             <Link href="/generate" className="inline-block bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">View Your Flashcards</Link>
           </div>
+        ) : (
+          <div className="text-center mt-12">
+            <p className="text-xl">Join us today to create your own flashcards!</p>
+          </div>
         )}
+
         {/* 6 Cards explaining the use of flashcards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 text-[#0b1e36]">
           <div className="bg-white shadow-md rounded-lg p-6 text-center">
@@ -52,18 +58,6 @@ export default function HomePage() {
             <p>Prepare for your exams by using flashcards for quick review sessions and focused study breaks.</p>
           </div>
         </div>
-
-        {/* Sign Up / Sign In Prompt */}
-        {!isSignedIn && (
-          <div className="text-center mt-12">
-            <p className="text-xl">Join us today to create your own flashcards!</p>
-            <div className="mt-6 space-x-4">
-              <Link href="/sign-up" className="bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Sign Up</Link>
-              <Link href="/sign-in" className="bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600">Sign In</Link>
-            </div>
-          </div>
-        )}
-
       </div>
 
       {/* Footer */}

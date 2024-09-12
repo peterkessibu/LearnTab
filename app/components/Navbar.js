@@ -9,8 +9,8 @@ const Navbar = () => (
                 <Link href="/">LearnTab</Link>
             </h1>
             <div className="space-x-4">
-                <Link href="/sign-in" className="text-[#09172b] bg-white hover:text-gray-200 border-[1px] border-white p-2 rounded-lg" >Sign In</Link>
-                <Link href="/sign-up" className="text-white hover:text-gray-200">Sign Up</Link>
+                <Link href="/sign-in" className="text-[#09172b] bg-white border-[1px] border-white p-2 rounded-lg" >Sign In</Link>
+                <Link href="/sign-up" className="text-white">Sign Up</Link>
             </div>
         </div>
     </nav>

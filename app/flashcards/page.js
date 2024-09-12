@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useUser } from '@clerk/nextjs' 
+import { useUser } from '@clerk/nextjs'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { db } from '../firebase' 
+import { db } from '../firebase'
 import { doc, collection, getDoc, getDocs, setDoc, writeBatch } from 'firebase/firestore'
 
 export default function Flashcard() {
@@ -94,13 +94,13 @@ export default function Flashcard() {
         <div className="max-w-3xl mx-auto mt-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {flashcards.map((flashcard) => (
-                    <div key={flashcard.id} className="relative bg-white shadow-md rounded-lg overflow-hidden group perspective">
+                    <div key={flashcard.id} className="relative w-full h-64 perspective">
                         <div
-                            className="w-full h-full transition-transform duration-500 transform-style-preserve-3d group-hover:rotate-y-180"
+                            className={`relative w-full h-full transition-transform duration-500 transform-style-preserve-3d ${flipped[flashcard.id] ? 'rotate-y-180' : ''}`}
                             onClick={() => handleCardClick(flashcard.id)}
                         >
                             {/* Front of the card */}
-                            <div className="absolute w-full h-full backface-hidden flex items-center justify-center p-4">
+                            <div className="absolute w-full h-full bg-white backface-hidden flex items-center justify-center p-4">
                                 <h3 className="text-xl font-semibold">{flashcard.front}</h3>
                             </div>
 

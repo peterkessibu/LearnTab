@@ -3,8 +3,8 @@ import OpenAI from 'openai'
 
 const systemPrompt = `
 You are a flashcard creator, you take in text and create multiple flashcards from it. Make sure to create exactly 10 flashcards.
-Both front and back should be one sentence long.
-You should return in the following JSON format:
+The front should be a brief topic sentence withh the back being a less than 5 lines sentences.
+You should return in the following JSON format such that when I click the front of the card the back shows and vice versa:
 {
   "flashcards":[
     {
@@ -29,7 +29,7 @@ export async function POST(request) {
     const text = await request.text()
 
     const completion = await openai.chat.completions.create({
-      model: "sao10k/l3-lunaris-8b",
+      model: "gpt-4o-mini",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: `Create flashcards from the following text: ${text}` }

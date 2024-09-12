@@ -5,6 +5,7 @@ import { useUser } from '@clerk/clerk-react'
 import { doc, collection, getDoc, writeBatch } from 'firebase/firestore'
 import { db } from '../firebase' 
 import Header from '../components/Header'
+import Footer from '../components/Footer'
 
 export default function Generate() {
     const [text, setText] = useState('')
@@ -21,7 +22,7 @@ export default function Generate() {
         }
 
         try {
-            const response = await fetch('/api/chat/route', {
+            const response = await fetch('/api/chat', {
                 method: 'POST',
                 body: JSON.stringify({ text }),
                 headers: {
@@ -91,23 +92,28 @@ export default function Generate() {
     }
 
     return (
-        <div className="w-screen">
+        <div className="w-screen h-screen m-auto items-center bg-[#dedeff]">
             <Header />
-            <div className='mx-auto py-8 px-4'>
-            <h1 className="text-4xl font-bold mb-4 mt-6">Generate Flashcards</h1>
-            <textarea
-                value={text}
-                onChange={(e) => setText(e.target.value)}
-                placeholder="Enter text"
-                className="w-full p-3 border border-gray-300 rounded-md mb-4 resize-none"
-                rows="4"
-            />
-            <button
-                onClick={handleSubmit}
-                className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-            >
-                Generate Flashcards
-            </button>
+            <div className='mx-auto py-8 px-4 items-center justify-center'>
+                <div className="flex justify-center items-center">
+                    <div className="w-full max-w-md p-4">
+                        <h1 className="text-4xl font-bold mb-4 mt-6 text-center">Generate Flashcards</h1>
+                        <textarea
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            placeholder="Enter text"
+                            className="w-full p-3 border border-gray-300 rounded-md mb-4"
+                            rows="4"
+                        />
+                        <button
+                            onClick={handleSubmit}
+                            className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                        >
+                            Generate Flashcards
+                        </button>
+                    </div>
+                </div>
+
 
             {/* Flashcard display */}
             {flashcards.length > 0 && (
@@ -170,6 +176,7 @@ export default function Generate() {
                 </div>
             )}
             </div>
+            <Footer />
         </div>
     )
 }

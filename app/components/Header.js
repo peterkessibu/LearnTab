@@ -10,12 +10,6 @@ const Header = () => {
 
     const handleLogout = async () => {
         try {
-            // Perform logout API call here
-            await fetch('/api/logout', {
-                method: 'POST',
-                credentials: 'include', // Include cookies for session management
-            });
-
             // Clear local state
             setIsLoggedIn(false);
 
