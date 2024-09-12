@@ -1,8 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { useUser } from '@clerk/clerk-react'
-import { doc, collection, writeBatch, getDoc } from 'firebase/firestore'
+import { useUser } from '@clerk/nextjs'
+import { doc, collection, writeBatch, getDoc, setDoc } from 'firebase/firestore'
 import { db } from '../firebase'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -57,8 +57,15 @@ export default function Generate() {
             return
         }
 
+        if (!user) {
+            setNotification({ message: 'User not authenticated. Please sign in.', type: 'error', show: true })
+            return
+        }
+
+        const userId = user.primaryEmailAddressId // Retrieve the primary email address ID from Clerk
+
         try {
-            const userDocRef = doc(db, 'users', user.primaryEmailAddressId) // Use primaryEmailAddressId
+            const userDocRef = doc(db, 'users', userId) // Use Clerk's userId to store data in Firestore
             const userDocSnap = await getDoc(userDocRef)
             const batch = writeBatch(db)
 
@@ -67,11 +74,13 @@ export default function Generate() {
                 const updatedSets = [...(userData.flashcardSets || []), { name: setName }]
                 batch.update(userDocRef, { flashcardSets: updatedSets })
             } else {
+                // Create a new user document if it doesn't exist
                 batch.set(userDocRef, { flashcardSets: [{ name: setName }] })
             }
 
+            // Create a new document under the user's flashcardSets collection to store the flashcards
             const setDocRef = doc(collection(userDocRef, 'flashcardSets'), setName)
-            batch.set(setDocRef, { flashcards })
+            batch.set(setDocRef, { flashcards: JSON.stringify(flashcards) }) // Save flashcards in JSON format
 
             await batch.commit()
 
@@ -79,6 +88,7 @@ export default function Generate() {
             handleCloseDialog()
             setSetName('')
         } catch (error) {
+            console.error('Error saving flashcards:', error)
             setNotification({ message: 'Error saving flashcards. Please try again.', type: 'error', show: true })
         }
     }
@@ -90,7 +100,7 @@ export default function Generate() {
             <div className="mx-auto py-8 px-4 items-center justify-center min-h-screen">
                 <div className="flex justify-center items-center">
                     <div className="w-full max-w-md p-4">
-                        <h1 className="text-4xl font-bold mb-4 mt-6 text-center">Generate Flashcards</h1>
+                        <h1 className="text-4xl font-bold mb-4 mt-3 text-center">Generate Flashcards</h1>
                         <textarea
                             value={text}
                             onChange={(e) => setText(e.target.value)}
