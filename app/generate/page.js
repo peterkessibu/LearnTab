@@ -2,23 +2,24 @@
 
 import { useState } from 'react'
 import { useUser } from '@clerk/clerk-react'
-import { doc, collection, writeBatch } from 'firebase/firestore'
+import { doc, collection, writeBatch, getDoc } from 'firebase/firestore'
 import { db } from '../firebase'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import Notification from '../components/Notifications'
 
 export default function Generate() {
     const [text, setText] = useState('')
     const [flashcards, setFlashcards] = useState([])
     const [setName, setSetName] = useState('')
     const [dialogOpen, setDialogOpen] = useState(false)
+    const [notification, setNotification] = useState({ message: '', type: '', show: false })
 
     const { user } = useUser()
-    console.log(user)
 
     const handleSubmit = async () => {
         if (!text.trim()) {
-            alert('Please enter some text to generate flashcards.')
+            setNotification({ message: 'Please enter some text to generate flashcards.', type: 'error', show: true })
             return
         }
 
@@ -27,8 +28,8 @@ export default function Generate() {
                 method: 'POST',
                 body: JSON.stringify({ text }),
                 headers: {
-                    'Content-Type': 'application/json'
-                }
+                    'Content-Type': 'application/json',
+                },
             })
 
             if (!response.ok) {
@@ -37,16 +38,13 @@ export default function Generate() {
 
             const data = await response.json()
 
-            // Check if data has the expected structure
-            console.log('Generated flashcards:', data)
             if (!Array.isArray(data)) {
                 throw new Error('Unexpected response format')
             }
 
             setFlashcards(data)
         } catch (error) {
-            console.error('Error generating flashcards:', error)
-            alert('An error occurred while generating flashcards. Please try again.')
+            setNotification({ message: 'Error generating flashcards. Please try again.', type: 'error', show: true })
         }
     }
 
@@ -55,39 +53,41 @@ export default function Generate() {
 
     const saveFlashcards = async () => {
         if (!setName.trim()) {
-            alert('Please enter a name for your flashcard set.')
+            setNotification({ message: 'Please enter a name for your flashcard set.', type: 'error', show: true })
             return
         }
 
         try {
-            if (!user || !user.id) {
-                throw new Error('User not authenticated')
-            }
-
-            const userDocRef = doc(db, 'users', user.id) // Reference to user document
-            const historyCollectionRef = collection(userDocRef, 'history') // Reference to the 'history' collection
-
-            const setDocRef = doc(historyCollectionRef, setName) // Reference to the document in 'history' with the provided name
+            const userDocRef = doc(db, 'users', user.primaryEmailAddressId) // Use primaryEmailAddressId
+            const userDocSnap = await getDoc(userDocRef)
             const batch = writeBatch(db)
 
-            // Write flashcard set to the 'history' collection
+            if (userDocSnap.exists()) {
+                const userData = userDocSnap.data()
+                const updatedSets = [...(userData.flashcardSets || []), { name: setName }]
+                batch.update(userDocRef, { flashcardSets: updatedSets })
+            } else {
+                batch.set(userDocRef, { flashcardSets: [{ name: setName }] })
+            }
+
+            const setDocRef = doc(collection(userDocRef, 'flashcardSets'), setName)
             batch.set(setDocRef, { flashcards })
 
             await batch.commit()
 
-            alert('Flashcards saved successfully!')
+            setNotification({ message: 'Flashcards saved successfully!', type: 'success', show: true })
             handleCloseDialog()
             setSetName('')
         } catch (error) {
-            console.error('Error saving flashcards:', error)
-            alert('An error occurred while saving flashcards. Please try again.')
+            setNotification({ message: 'Error saving flashcards. Please try again.', type: 'error', show: true })
         }
     }
 
     return (
-        <div className="w-screen min-h-screen m-auto items-center bg-[#dedeff]">
+        <div className="min-w-screen max-h-screen items-center bg-[#dedeff]">
             <Header />
-            <div className='mx-auto py-8 px-4 items-center justify-center'>
+
+            <div className="mx-auto py-8 px-4 items-center justify-center min-h-screen">
                 <div className="flex justify-center items-center">
                     <div className="w-full max-w-md p-4">
                         <h1 className="text-4xl font-bold mb-4 mt-6 text-center">Generate Flashcards</h1>
@@ -107,7 +107,6 @@ export default function Generate() {
                     </div>
                 </div>
 
-                {/* Flashcard display */}
                 {flashcards.length > 0 && (
                     <div className="mt-8">
                         <h2 className="text-2xl font-semibold mb-4">Generated Flashcards</h2>
@@ -127,6 +126,7 @@ export default function Generate() {
                         </div>
                     </div>
                 )}
+
                 {flashcards.length > 0 && (
                     <div className="mt-4 flex justify-center">
                         <button
@@ -137,9 +137,10 @@ export default function Generate() {
                         </button>
                     </div>
                 )}
+
                 {dialogOpen && (
-                    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50">
-                        <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                    <div className="fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-65">
+                        <div className="p-6 rounded-lg shadow-lg w-full max-w-md bg-white">
                             <h2 className="text-lg font-semibold">Save Flashcard Set</h2>
                             <p className="mt-2 text-gray-600">Please enter a name for your flashcard set.</p>
                             <input
@@ -168,6 +169,14 @@ export default function Generate() {
                     </div>
                 )}
             </div>
+
+            <Notification
+                message={notification.message}
+                type={notification.type}
+                show={notification.show}
+                onClose={() => setNotification({ ...notification, show: false })}
+            />
+
             <Footer />
         </div>
     )

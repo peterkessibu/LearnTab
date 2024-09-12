@@ -1,19 +1,41 @@
-'use client'
-
+// components/Navbar.js
+import { useUser } from '@clerk/nextjs'
 import Link from 'next/link'
+import Image from 'next/image'
 
-const Navbar = () => (
-    <nav className="bg-[#003f8f] p-4">
-        <div className="container mx-auto flex justify-between items-center">
-            <h1 className="text-white text-xl font-bold">
-                <Link href="/">LearnTab</Link>
-            </h1>
-            <div className="space-x-4">
-                <Link href="/sign-in" className="text-[#09172b] bg-white border-[1px] border-white p-2 rounded-lg" >Sign In</Link>
-                <Link href="/sign-up" className="text-white">Sign Up</Link>
+export default function Navbar() {
+    const { isSignedIn, user } = useUser()
+
+    return (
+        <nav className="flex justify-between items-center bg-[#0b1e36] text-white p-4">
+            <Link href="/" className="text-2xl font-bold">
+                LearnTab
+            </Link>
+
+            <div className="flex items-center space-x-4">
+                {isSignedIn ? (
+                    <div className="flex items-center space-x-2">
+                        {/* Profile Image */}
+                        <Image
+                            src={user.profileImageUrl || "/default-picture.svg"}  
+                            alt="Profile"
+                            className="rounded-full"
+                            width={32}
+                            height={32}
+                        />
+                        <span>{user.fullName}</span>
+                    </div>
+                ) : (
+                    <>
+                        <Link href="/sign-in" className="bg-blue-600 text-white py-1 px-4 rounded-lg hover:bg-blue-700">
+                            Sign In
+                        </Link>
+                        <Link href="/sign-up" className="bg-green-600 text-white py-1 px-4 rounded-lg hover:bg-green-700">
+                            Sign Up
+                        </Link>
+                    </>
+                )}
             </div>
-        </div>
-    </nav>
-)
-
-export default Navbar
+        </nav>
+    )
+}

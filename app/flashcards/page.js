@@ -18,7 +18,7 @@ export default function Flashcard() {
     useEffect(() => {
         async function getFlashcards() {
             if (!user) return
-            const userDocRef = doc(db, 'users', user.primaryEmailAddressId) // Use primaryEmailAddressId
+            const userDocRef = doc(db, 'users', user.primaryEmailAddressId)
             const userDocSnap = await getDoc(userDocRef)
 
             if (userDocSnap.exists()) {
