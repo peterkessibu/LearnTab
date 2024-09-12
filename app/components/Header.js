@@ -35,7 +35,7 @@ const Header = () => {
                             <span className="text-white">{user?.firstName}</span>
                             <button
                                 onClick={handleLogout}
-                                className="text-[#09172b] bg-white hover:text-gray-200 border-[1px] border-white p-2 rounded-lg"
+                                className="text-[#09172b] bg-white border-[1px] border-white p-2 rounded-lg"
                             >
                                 Log Out
                             </button>
