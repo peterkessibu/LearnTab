@@ -1,4 +1,5 @@
 // components/loading.tsx
+'use client'
 import React from "react";
 import { newtonsCradle } from 'ldrs'
 
