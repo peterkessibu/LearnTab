@@ -63,7 +63,7 @@ export default function Flashcard() {
         }
 
         try {
-            const userDocRef = doc(db, 'users', user.primaryEmailAddressId) // Use primaryEmailAddressId
+            const userDocRef = doc(db, 'users', user.id) // Use primaryEmailAddressId
             const userDocSnap = await getDoc(userDocRef)
 
             const batch = writeBatch(db)
@@ -91,7 +91,7 @@ export default function Flashcard() {
     }
 
     return (
-        <div className="max-w-3xl mx-auto mt-8">
+        <div className="max-w-3xl mx-auto mt-8 bg-[#dedeff]">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 {flashcards.map((flashcard) => (
                     <div key={flashcard.id} className="relative w-full h-64 perspective">

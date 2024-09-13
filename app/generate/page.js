@@ -14,8 +14,7 @@ export default function Generate() {
     const [setName, setSetName] = useState('')
     const [dialogOpen, setDialogOpen] = useState(false)
     const [notification, setNotification] = useState({ message: '', type: '', show: false })
-
-    const { user } = useUser() // Clerk's user object to retrieve user info
+    const { user } = useUser() 
 
     const handleSubmit = async () => {
         if (!text.trim()) {
@@ -43,7 +42,6 @@ export default function Generate() {
 
     const handleOpenDialog = () => setDialogOpen(true)
     const handleCloseDialog = () => setDialogOpen(false)
-    console.log(user)
     const saveFlashcards = async () => {
         if (!setName.trim()) {
             setNotification({ message: 'Please enter a name for your flashcard set.', type: 'error', show: true })
@@ -55,10 +53,10 @@ export default function Generate() {
             return
         }
 
-        const userId = user.id // Use Clerk's user ID to identify users in Firestore
+        const userId = user.id
 
         try {
-            const userDocRef = doc(db, 'users', userId) // Store data in Firestore under userId
+            const userDocRef = doc(db, 'users', userId) 
             const userDocSnap = await getDoc(userDocRef)
             const batch = writeBatch(db)
 
@@ -87,27 +85,25 @@ export default function Generate() {
     }
 
     return (
-        <div className="min-w-screen max-h-screen items-center bg-[#dedeff]">
+        <div className="flex flex-col min-h-screen bg-[#dedeff]">
             <Header />
 
-            <div className="mx-auto py-8 px-4 items-center justify-center min-h-screen">
-                <div className="flex justify-center items-center">
-                    <div className="w-full max-w-md p-4">
-                        <h1 className="text-4xl font-bold mb-4 mt-3 text-center">Generate Flashcards</h1>
-                        <textarea
-                            value={text}
-                            onChange={(e) => setText(e.target.value)}
-                            placeholder="Enter text"
-                            className="w-full p-3 border border-gray-300 rounded-md mb-4"
-                            rows="4"
-                        />
-                        <button
-                            onClick={handleSubmit}
-                            className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                        >
-                            Generate Flashcards
-                        </button>
-                    </div>
+            <main className="flex-grow flex flex-col items-center justify-center p-4">
+                <div className="w-full max-w-md">
+                    <h1 className="text-4xl font-bold mb-4 mt-3 text-center">Generate Flashcards</h1>
+                    <textarea
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                        placeholder="Enter text"
+                        className="w-full p-3 border border-gray-300 rounded-md mb-4"
+                        rows="4"
+                    />
+                    <button
+                        onClick={handleSubmit}
+                        className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                    >
+                        Generate Flashcards
+                    </button>
                 </div>
 
                 {flashcards.length > 0 && (
@@ -171,16 +167,16 @@ export default function Generate() {
                         </div>
                     </div>
                 )}
-            </div>
+            </main>
 
+            <Footer />
             <Notification
                 message={notification.message}
                 type={notification.type}
                 show={notification.show}
                 onClose={() => setNotification({ ...notification, show: false })}
             />
-
-            <Footer />
         </div>
+
     )
 }
