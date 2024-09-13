@@ -5,11 +5,13 @@ import { useUser } from '@clerk/nextjs'
 import { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import Loading from './components/Loading'
+import dynamic from 'next/dynamic';
+
 
 export default function HomePage() {
   const { isSignedIn, user } = useUser()
   const [isLoading, setIsLoading] = useState(true)
+  const Loading = dynamic(() => import('./components/Loading'), { ssr: false });
   const [ buttonText, setButtonText] = useState('Get Started')
 
   useEffect(() => {
