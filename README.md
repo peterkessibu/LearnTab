@@ -1,4 +1,4 @@
-Certainly! Here’s a full `README.md` for your Flashcard Generator app:
+Certainly! Here is your `README.md` in markdown format:
 
 ```markdown
 # Flashcard Generator
@@ -15,13 +15,16 @@ The Flashcard Generator is a web application designed to help users create, mana
 - **Clerk**: Manages user authentication and user account management.
 - **TailwindCSS**: A utility-first CSS framework for creating custom designs quickly and responsively.
 - **Stripe API**: Used for managing subscriptions and payment processing.
-- **OpenAI**: Powers dynamic flashcard generation using gpt-4o-mini.
+- **OpenAI**: Powers dynamic flashcard generation using GPT-4.
+- **Pinecone**: Provides vector database capabilities for managing and querying flashcard data.
+- **LangChain**: Facilitates interaction with large language models for enhanced functionality.
 
 ## Features
 
 - **Dynamic Flashcard Creation**: Generate flashcards on various topics using AI models.
 - **Responsive Design**: Optimized for mobile, tablet, and desktop views using TailwindCSS.
 - **User Authentication**: Secure sign-up, login, and session management with Clerk.
+- **Subscription Management**: Manage and customize subscription plans using Stripe.
 - **Intuitive UI**: Built with React for a seamless and interactive user experience.
 
 ## Getting Started
@@ -63,6 +66,7 @@ The Flashcard Generator is a web application designed to help users create, mana
 
    CLERK_FRONTEND_API=your_clerk_frontend_api
    CLERK_API_KEY=your_clerk_api_key
+   STRIPE_PUBLIC_KEY=your_stripe_public_key
    ```
 
 4. **Run the Development Server**
@@ -79,15 +83,12 @@ The Flashcard Generator is a web application designed to help users create, mana
 
 - **Creating Flashcards**: Use the application’s interface to input topics and generate flashcards.
 
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
-For any questions or feedback, please reach out to (mailto:peter.essibu@stu.ucc.edu.gh).
-
+For any questions or feedback, please reach out to [peter.essibu@stu.ucc.edu.gh](mailto:peter.essibu@stu.ucc.edu.gh).
 ```
 
-Feel free to modify or expand this template as needed for your project!
