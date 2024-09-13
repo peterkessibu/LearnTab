@@ -1,36 +1,41 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flashcard Generator
+
+## Overview
+
+The Flashcard Generator is a web application designed to help users create, manage, and review flashcards. Built using modern web technologies, it offers a seamless experience across devices with a focus on responsive design and user-friendly interfaces.
+
+## Tech Stack
+
+- **React JS**: For building the user interface with a component-based architecture.
+- **Next.js**: Used for server-side rendering and static site generation, ensuring optimal performance and SEO.
+- **Firebase**: Provides backend services including authentication and database management.
+- **Clerk**: Handles authentication and user management.
+- **TailwindCSS**: For styling and responsive design, ensuring the app looks great on all devices.
+- **Stripe API**: Integrated for managing subscriptions and payment plans.
+- **OpenAI & Pinecone**: Utilized in the dynamic generation of flashcards based on user input and external data sources.
+
+## Features
+
+- **Dynamic Flashcard Creation**: Generate flashcards on any topic using the gpt-4.o-mini.
+- **Responsive Design**: Optimized for mobile, tablet, and desktop views.
+- **User Authentication**: Sign up, log in, and manage user sessions with Clerk.
+- **Interactive UI**: Built with React and styled with TailwindCSS for a modern and intuitive experience.
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
+- Node.js and npm/yarn
+- A Firebase project and Clerk account
+- Stripe account for payment integration
+
+### Installation
+
+1. **Clone the Repository**
+
+   ```bash
+   git clone https://github.com/yourusername/flashcard-generator.git
+   cd flashcard-generator
+npm install
 # or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+yarn install
