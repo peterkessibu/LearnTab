@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useUser } from '@clerk/nextjs'
-import { doc, collection, writeBatch, getDoc, setDoc } from 'firebase/firestore'
+import { doc, collection, writeBatch, getDoc } from 'firebase/firestore'
 import { db } from '../firebase'
 import Header from '../components/Header'
 import Footer from '../components/Footer'

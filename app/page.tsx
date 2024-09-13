@@ -10,6 +10,7 @@ import Loading from './components/loading'
 export default function HomePage() {
   const { isSignedIn, user } = useUser()
   const [isLoading, setIsLoading] = useState(true)
+  const [ buttonText, setButtonText] = useState('Get Started')
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -17,10 +18,22 @@ export default function HomePage() {
     }, 2450)
     return () => clearTimeout(timer)
   }, [])
+
+  const handleClick = () => {
+  setButtonText('Getting ready');
+  
+  const timer = setTimeout(() => {
+    setIsLoading(false);
+  }, 2000);
+
+  return () => clearTimeout(timer);
+};
+
+
   if (isLoading) {
     return (
-      <div className="bg-white flex min-h-screen w-full justify-center items-center">
-          <div className='flex flex-colitems-enter justify-center'>
+      <div className="bg-[#dedeff] flex min-h-screen w-full justify-center items-center">
+          <div className='flex flex-col items-center justify-center'>
             <p className="text-6xl text-blue-900 font-bold mb-4">
                 LearnTab
             </p>
@@ -31,7 +44,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="flex flex-col bg-[#dedeff]">
+    <div className="bg-[#dedeff]">
       <Navbar />
       <div className="flex-grow container mx-auto p-8">
         <p className="text-3xl font-bold text-center mb-4">Welcome to LearnTab</p>
@@ -45,8 +58,8 @@ export default function HomePage() {
         ) : (
           <div className="text-center my-6 ">
             <p className="text-xl">Join us today to create your own flashcards!</p>
-            <button>
-              <Link href="/sign-up" className="inline-block bg-blue-600 mt-2 text-white py-2 px-4 rounded-lg hover:bg-blue-700">Get started</Link>
+            <button onClick={handleClick}>
+              <Link href="/sign-up" className="inline-block bg-blue-600 mt-2 text-white py-2 px-4 rounded-lg hover:bg-blue-700">{buttonText}</Link>
             </button>
           </div>
         )}
