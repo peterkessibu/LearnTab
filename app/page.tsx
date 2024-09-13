@@ -32,7 +32,7 @@ export default function HomePage() {
 
   if (isLoading) {
     return (
-      <div className="bg-[#dedeff] flex min-h-screen w-full justify-center items-center">
+      <div className="bg-[#dedeff] poppins-regular flex min-h-screen w-full justify-center items-center">
           <div className='flex flex-col items-center justify-center'>
             <p className="text-6xl text-blue-900 font-bold mb-4">
                 LearnTab
