@@ -15,7 +15,7 @@ export default function Generate() {
     const [dialogOpen, setDialogOpen] = useState(false)
     const [notification, setNotification] = useState({ message: '', type: '', show: false })
 
-    const { user } = useUser()
+    const { user } = useUser() // Clerk's user object to retrieve user info
 
     const handleSubmit = async () => {
         if (!text.trim()) {
@@ -27,20 +27,13 @@ export default function Generate() {
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 body: JSON.stringify({ text }),
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
             })
 
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`)
-            }
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
 
             const data = await response.json()
-
-            if (!Array.isArray(data)) {
-                throw new Error('Unexpected response format')
-            }
+            if (!Array.isArray(data)) throw new Error('Unexpected response format')
 
             setFlashcards(data)
         } catch (error) {
@@ -50,7 +43,7 @@ export default function Generate() {
 
     const handleOpenDialog = () => setDialogOpen(true)
     const handleCloseDialog = () => setDialogOpen(false)
-
+    console.log(user)
     const saveFlashcards = async () => {
         if (!setName.trim()) {
             setNotification({ message: 'Please enter a name for your flashcard set.', type: 'error', show: true })
@@ -62,10 +55,10 @@ export default function Generate() {
             return
         }
 
-        const userId = user.primaryEmailAddressId // Retrieve the primary email address ID from Clerk
+        const userId = user.id // Use Clerk's user ID to identify users in Firestore
 
         try {
-            const userDocRef = doc(db, 'users', userId) // Use Clerk's userId to store data in Firestore
+            const userDocRef = doc(db, 'users', userId) // Store data in Firestore under userId
             const userDocSnap = await getDoc(userDocRef)
             const batch = writeBatch(db)
 
