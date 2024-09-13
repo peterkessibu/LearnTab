@@ -11,6 +11,7 @@
   "dependencies": {
     "@clerk/nextjs": "^5.5.2",
     "firebase": "^10.13.1",
+    "ldrs": "^1.0.2",
     "next": "14.2.9",
     "openai": "^4.59.0",
     "react": "^18",
