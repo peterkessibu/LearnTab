@@ -7,7 +7,6 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import dynamic from 'next/dynamic';
 
-
 export default function HomePage() {
   const { isSignedIn, user } = useUser()
   const [isLoading, setIsLoading] = useState(true)
