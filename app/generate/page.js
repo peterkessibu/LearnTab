@@ -107,7 +107,7 @@ export default function Generate() {
 
                 {flashcards.length > 0 && (
                     <div className="mt-8">
-                        <h2 className="text-2xl font-semibold mb-4">Generated Flashcards</h2>
+                        <h2 className="text-2xl font-semibold mb-2">Generated Flashcards</h2>
                         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                             {flashcards.map((flashcard, index) => (
                                 <div key={index} className="bg-white border border-gray-300 rounded-lg shadow-md p-4">
@@ -128,7 +128,7 @@ export default function Generate() {
                 {flashcards.length > 0 && (
                     <div className="mt-4 flex justify-center">
                         <button
-                            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600"
+                            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
                             onClick={handleOpenDialog}
                         >
                             Save Flashcards

@@ -33,7 +33,7 @@ export default function HomePage() {
 
   if (isLoading) {
     return (
-      <div className="bg-[#dedeff] poppins-regular flex min-h-screen w-full justify-center items-center">
+      <div className="bg-[#dedeff] flex min-h-screen w-full justify-center items-center">
           <div className='flex flex-col items-center justify-center'>
             <p className="text-6xl text-blue-900 font-bold mb-4">
                 LearnTab
@@ -47,12 +47,12 @@ export default function HomePage() {
   return (
     <div className="bg-[#dedeff]">
       <Navbar />
-      <div className="flex-grow container mx-auto p-8">
-        <p className="text-3xl font-bold text-center mb-4">Welcome to LearnTab</p>
+      <div className="flex-grow container mx-auto p-6">
+        <p className="text-3xl font-bold text-center mb-2">Welcome to LearnTab</p>
         
         {isSignedIn ? (
           <div className="text-center m-4">
-            <p className="text-xl">Welcome back, {user.firstName}!</p>
+            <p className="text-xl font-semibold">Welcome back, {user.firstName}!</p>
             <p className="text-center text-lg mb-4">Boost your learning with flashcards designed for every subject!</p>
             <Link href="/generate" className="inline-block bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">View Your Flashcards</Link>
           </div>
