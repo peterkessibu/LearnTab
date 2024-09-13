@@ -87,7 +87,6 @@ export default function Generate() {
     return (
         <div className="flex flex-col min-h-screen bg-[#dedeff]">
             <Header />
-
             <main className="flex-grow flex flex-col items-center justify-center p-4">
                 <div className="w-full max-w-md">
                     <h1 className="text-4xl font-bold mb-4 mt-3 text-center">Generate Flashcards</h1>
@@ -168,7 +167,6 @@ export default function Generate() {
                     </div>
                 )}
             </main>
-
             <Footer />
             <Notification
                 message={notification.message}

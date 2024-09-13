@@ -14,8 +14,6 @@ const Header = () => {
             // Sign out using Clerk's signOut method
             await signOut();
 
-            // Clear local user data if needed (Clerk handles most of this)
-            // Redirect to homepage
             router.push('/');
         } catch (error) {
             console.error('Error logging out:', error);
