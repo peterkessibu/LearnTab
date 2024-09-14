@@ -1,4 +1,3 @@
-
 import { NextResponse } from 'next/server'
 import OpenAI from 'openai'
 
@@ -30,7 +29,7 @@ export async function POST(request) {
     const text = await request.text()
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: "openai/gpt-3.5-turbo",
       messages: [
         { role: "system", content: systemPrompt },
         { role: "user", content: `Create flashcards from the following text: ${text}` }

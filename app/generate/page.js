@@ -14,7 +14,7 @@ export default function Generate() {
     const [setName, setSetName] = useState('')
     const [dialogOpen, setDialogOpen] = useState(false)
     const [notification, setNotification] = useState({ message: '', type: '', show: false })
-    const { user } = useUser() 
+    const { user } = useUser()
 
     const handleSubmit = async () => {
         if (!text.trim()) {
@@ -56,7 +56,7 @@ export default function Generate() {
         const userId = user.id
 
         try {
-            const userDocRef = doc(db, 'users', userId) 
+            const userDocRef = doc(db, 'users', userId)
             const userDocSnap = await getDoc(userDocRef)
             const batch = writeBatch(db)
 

@@ -20,7 +20,7 @@ export default function SignUpPage() {
         <div className="flex flex-col min-h-screen w-full bg-[#dedeff]">
             {/* Navbar */}
             <nav className="w-full">
-                <div className="bg-[#003f8f] p-4 w-full flex justify-center">
+                <div className="bg-[#0b1e36] p-4 w-full flex justify-center">
                     <Link href={'/'} className="text-white text-2xl font-bold">LearnTab</Link>
                 </div>
             </nav>
