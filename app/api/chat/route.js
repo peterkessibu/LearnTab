@@ -20,8 +20,8 @@ const openai = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
   apiKey: process.env.OPENROUTER_API_KEY,
   defaultHeaders: {
-    "HTTP-Referer": 'localhost:3000', // Change to your production URL in production
-    "X-Title": 'Headstarter', // Replace with your app's name
+    "HTTP-Referer": process.env.VERCEL_URL || 'http://localhost:3000',
+    "X-Title": 'learn-tab',
   }
 })
 
