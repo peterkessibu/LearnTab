@@ -2,10 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 /* globals.css */
-.poppins-regular {
-  font-family: "Poppins", sans-serif;
-  font-weight: 400;
-  font-style: normal;
+/* Add this to your global CSS file */
+.flip-container {
+  perspective: 1000px;
 }
 
+.flip-card {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  /* Adjust height as needed */
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
 
+.flip-card .front,
+.flip-card .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.flip-card .back {
+  transform: rotateY(180deg);
+}
+
+.flip-card.flip {
+  transform: rotateY(180deg);
+}

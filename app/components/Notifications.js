@@ -15,7 +15,7 @@ const Notification = ({ message, type, show, onClose }) => {
                 }`}
         >
             {message && (
-                <div className={`p-4 rounded-md shadow-md ${type === 'success' ? 'bg-green-500' : 'bg-red-500'} text-white`}>
+                <div className={`p-3 rounded-md shadow-md ${type === 'success' ? 'bg-[#3c5df0]' : 'bg-[#e02020]'} text-white text-base`}>
                     {message}
                 </div>
             )}

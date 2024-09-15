@@ -1,8 +1,9 @@
+
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useUser } from '@clerk/nextjs'
-import { doc, collection, writeBatch, getDoc } from 'firebase/firestore'
+import { doc, collection, writeBatch, getDoc, getDocs } from 'firebase/firestore'
 import { db } from '../firebase'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
@@ -11,16 +12,35 @@ import Notification from '../components/Notifications'
 export default function Generate() {
     const [text, setText] = useState('')
     const [flashcards, setFlashcards] = useState([])
-    const [setName, setSetName] = useState('')
-    const [dialogOpen, setDialogOpen] = useState(false)
+    const [flashcardSets, setFlashcardSets] = useState([])
+    const [selectedSet, setSelectedSet] = useState(null)
     const [notification, setNotification] = useState({ message: '', type: '', show: false })
+    const [loading, setLoading] = useState(false)
     const { user } = useUser()
+
+    // Fetch flashcard sets for the history sidebar
+    useEffect(() => {
+        if (user) {
+            fetchFlashcardSets()
+        }
+    }, [user])
+
+    const fetchFlashcardSets = async () => {
+        if (!user) return
+        const userId = user.id
+        const userDocRef = doc(db, 'users', userId)
+        const flashcardSetsSnapshot = await getDocs(collection(userDocRef, 'flashcardSets'))
+        const sets = flashcardSetsSnapshot.docs.map(doc => doc.id)
+        setFlashcardSets(sets)
+    }
 
     const handleSubmit = async () => {
         if (!text.trim()) {
             setNotification({ message: 'Please enter some text to generate flashcards.', type: 'error', show: true })
             return
         }
+
+        setLoading(true)
 
         try {
             const response = await fetch('/api/chat', {
@@ -35,137 +55,127 @@ export default function Generate() {
             if (!Array.isArray(data)) throw new Error('Unexpected response format')
 
             setFlashcards(data)
+            await saveFlashcardsAuto(data)  // Automatically save flashcards
         } catch (error) {
             setNotification({ message: 'Error generating flashcards. Please try again.', type: 'error', show: true })
+        } finally {
+            setLoading(false)
         }
     }
 
-    const handleOpenDialog = () => setDialogOpen(true)
-    const handleCloseDialog = () => setDialogOpen(false)
-    const saveFlashcards = async () => {
-        if (!setName.trim()) {
-            setNotification({ message: 'Please enter a name for your flashcard set.', type: 'error', show: true })
-            return
-        }
-
+    const saveFlashcardsAuto = async (generatedFlashcards) => {
         if (!user) {
             setNotification({ message: 'User not authenticated. Please sign in.', type: 'error', show: true })
             return
         }
 
         const userId = user.id
+        const setName = `Set-${new Date().toISOString()}` // Automatically generate a set name
 
         try {
             const userDocRef = doc(db, 'users', userId)
-            const userDocSnap = await getDoc(userDocRef)
             const batch = writeBatch(db)
 
-            if (userDocSnap.exists()) {
-                const userData = userDocSnap.data()
-                const updatedSets = [...(userData.flashcardSets || []), { name: setName }]
-                batch.update(userDocRef, { flashcardSets: updatedSets })
-            } else {
-                // Create a new user document if it doesn't exist
-                batch.set(userDocRef, { flashcardSets: [{ name: setName }] })
-            }
-
-            // Create a new document under the user's flashcardSets collection to store the flashcards
             const setDocRef = doc(collection(userDocRef, 'flashcardSets'), setName)
-            batch.set(setDocRef, { flashcards: JSON.stringify(flashcards) }) // Save flashcards in JSON format
+            batch.set(setDocRef, { flashcards: JSON.stringify(generatedFlashcards) })
 
             await batch.commit()
 
-            setNotification({ message: 'Flashcards saved successfully!', type: 'success', show: true })
-            handleCloseDialog()
-            setSetName('')
+            // Update sidebar with new set
+            setFlashcardSets([...flashcardSets, setName])
+            setNotification({ message: 'Flashcards saved automatically!', type: 'success', show: true })
         } catch (error) {
             console.error('Error saving flashcards:', error)
             setNotification({ message: 'Error saving flashcards. Please try again.', type: 'error', show: true })
         }
     }
 
+    const fetchFlashcards = async (setName) => {
+        if (!user) return
+        const userId = user.id
+        const setDocRef = doc(db, 'users', userId, 'flashcardSets', setName)
+        const setDocSnap = await getDoc(setDocRef)
+
+        if (setDocSnap.exists()) {
+            setFlashcards(JSON.parse(setDocSnap.data().flashcards))
+            setSelectedSet(setName)
+        } else {
+            setNotification({ message: 'Error fetching flashcards.', type: 'error', show: true })
+        }
+    }
+
     return (
         <div className="flex flex-col min-h-screen bg-[#dedeff]">
             <Header />
-            <main className="flex-grow flex flex-col items-center justify-center p-4">
-                <div className="w-full max-w-md">
-                    <h1 className="text-4xl font-bold mb-4 mt-3 text-center">Generate Flashcards</h1>
-                    <textarea
-                        value={text}
-                        onChange={(e) => setText(e.target.value)}
-                        placeholder="Enter text"
-                        className="w-full p-3 border border-gray-300 rounded-md mb-4"
-                        rows="4"
-                    />
-                    <button
-                        onClick={handleSubmit}
-                        className="w-full py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                    >
-                        Generate Flashcards
-                    </button>
-                </div>
+            <main className="flex-grow flex">
+                <aside className="w-1/6 p-4 bg-[#ebecf5]">
+                    <p className="text-lg font-semibold mb-4">LearnTab History</p>
+                    <hr class="border-gray-300 my-1" />
+                    <ul>
+                        {flashcardSets.map((setName, index) => (
+                            <li key={index} className="mb-2">
+                                <button
+                                    className="text-black italic capitalize"
+                                    onClick={() => fetchFlashcards(setName)}
+                                >
+                                    {setName}
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                </aside>
 
-                {flashcards.length > 0 && (
-                    <div className="mt-8">
-                        <h2 className="text-2xl font-semibold mb-2">Generated Flashcards</h2>
-                        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+                {/* Flashcard Generation Section */}
+                <div className="w-3/4 p-4">
+                    <h1 className="text-4xl font-bold mb-4 mt-3 text-center">Generate Flashcards</h1>
+                    <div className='flex flex-col items-center'>
+                        <textarea
+                            value={text}
+                            onChange={(e) => setText(e.target.value)}
+                            placeholder="Enter text"
+                            className="w-1/3 p-3 border border-gray-300 rounded-md mb-4"
+                            rows="4"
+                        />
+                        <button
+                            onClick={handleSubmit}
+                            disabled={loading}
+                            className={`w-1/3 py-2 px-4 text-white rounded-md ${loading ? 'bg-blue-500 hover:bg-blue-600' : 'bg-blue-500 hover:bg-blue-600'}`}
+                        >
+                            {loading ? 'Generating...' : 'Generate Flashcards'}
+                        </button>
+
+                    </div>
+                    {flashcards.length > 0 && (
+                        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4">
                             {flashcards.map((flashcard, index) => (
-                                <div key={index} className="bg-white border border-gray-300 rounded-lg shadow-md p-4">
-                                    <div className="mb-4">
-                                        <h3 className="text-lg font-semibold">Front:</h3>
-                                        <p>{flashcard.front}</p>
-                                    </div>
-                                    <div>
-                                        <h3 className="text-lg font-semibold">Back:</h3>
-                                        <p>{flashcard.back}</p>
+                                <div
+                                    key={index}
+                                    className="flip-container cursor-pointer"
+                                    onClick={() => {
+                                        const updatedFlashcards = [...flashcards]
+                                        updatedFlashcards[index] = {
+                                            ...flashcard,
+                                            isFlipped: !flashcard.isFlipped
+                                        }
+                                        setFlashcards(updatedFlashcards)
+                                    }}
+                                >
+                                    <div className={`flip-card ${flashcard.isFlipped ? 'flip' : ''}`}>
+                                        <div className="front bg-white border border-gray-300 rounded-lg shadow-md p-4">
+                                            <h3 className="text-lg font-semibold">Front:</h3>
+                                            <p>{flashcard.front}</p>
+                                        </div>
+                                        <div className="back bg-white border border-gray-300 rounded-lg shadow-md p-4">
+                                            <h3 className="text-lg font-semibold">Back:</h3>
+                                            <p>{flashcard.back}</p>
+                                        </div>
                                     </div>
                                 </div>
                             ))}
                         </div>
-                    </div>
-                )}
 
-                {flashcards.length > 0 && (
-                    <div className="mt-4 flex justify-center">
-                        <button
-                            className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                            onClick={handleOpenDialog}
-                        >
-                            Save Flashcards
-                        </button>
-                    </div>
-                )}
-
-                {dialogOpen && (
-                    <div className="fixed inset-0 flex justify-center items-center z-50 bg-black bg-opacity-65">
-                        <div className="p-6 rounded-lg shadow-lg w-full max-w-md bg-white">
-                            <h2 className="text-lg font-semibold">Save Flashcard Set</h2>
-                            <p className="mt-2 text-gray-600">Please enter a name for your flashcard set.</p>
-                            <input
-                                autoFocus
-                                type="text"
-                                placeholder="Set Name"
-                                value={setName}
-                                onChange={(e) => setSetName(e.target.value)}
-                                className="mt-2 w-full p-2 border border-gray-300 rounded-md"
-                            />
-                            <div className="mt-4 flex justify-end space-x-2">
-                                <button
-                                    onClick={handleCloseDialog}
-                                    className="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    onClick={saveFlashcards}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-                                >
-                                    Save
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                )}
+                    )}
+                </div>
             </main>
             <Footer />
             <Notification
@@ -175,6 +185,5 @@ export default function Generate() {
                 onClose={() => setNotification({ ...notification, show: false })}
             />
         </div>
-
     )
 }

@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { useUser } from '@clerk/nextjs'
 import { useState, useEffect } from 'react'
-import Navbar from './components/Navbar'
+import Header from './components/Header'
 import Footer from './components/Footer'
 import dynamic from 'next/dynamic';
 
@@ -45,28 +45,34 @@ export default function HomePage() {
   }
 
   return (
-    <div className="bg-[#dedeff]">
-      <Navbar />
+    <div className="min-h-screen flex flex-col bg-[#dedeff]">
+      <Header />
+
+      {/* Main Content Area */}
       <div className="flex-grow container mx-auto p-6">
         <p className="text-3xl font-bold text-center mb-2">Welcome to LearnTab</p>
-        
+
         {isSignedIn ? (
           <div className="text-center m-4">
             <p className="text-xl font-semibold">Welcome back, {user.firstName}!</p>
             <p className="text-center text-lg mb-4">Boost your learning with flashcards designed for every subject!</p>
-            <Link href="/generate" className="inline-block bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">View Your Flashcards</Link>
+            <Link href="/generate" className="inline-block bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+              View My Flashcards
+            </Link>
           </div>
         ) : (
-          <div className="text-center my-6 ">
+          <div className="text-center my-6">
             <p className="text-xl">Join us today to create your own flashcards!</p>
             <button onClick={handleClick}>
-              <Link href="/sign-up" className="inline-block bg-blue-600 mt-2 text-white py-2 px-4 rounded-lg hover:bg-blue-700">{buttonText}</Link>
+              <Link href="/sign-up" className="inline-block bg-blue-600 mt-2 text-white py-2 px-4 rounded-lg hover:bg-blue-700">
+                {buttonText}
+              </Link>
             </button>
           </div>
         )}
 
         {/* 6 Cards explaining the use of flashcards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-[#0b1e36]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-2 text-[#0b1e36]">
           <div className="bg-white shadow-md rounded-lg p-4 text-center">
             <p className="text-xl font-semibold mb-2">Active Learning</p>
             <p>Flashcards promote active recall, which is proven to be one of the most effective learning techniques.</p>
