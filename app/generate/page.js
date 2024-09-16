@@ -54,7 +54,6 @@ export default function Generate() {
                 headers: { 'Content-Type': 'application/json' },
             });
 
-            // Log response status for debugging
             console.log('Response status:', response.status);
 
             if (!response.ok) {
@@ -65,17 +64,20 @@ export default function Generate() {
 
             const data = await response.json();
 
-            // Log response data for debugging
             console.log('Response data:', data);
 
-            if (!data.flashcards || !Array.isArray(data.flashcards)) {
+            // Adjusting for nested response format
+            const flashcards = data.flashcards.flashcards;
+
+            if (!flashcards || !Array.isArray(flashcards)) {
+                console.error('Invalid response format:', data);
                 throw new Error('Unexpected response format. Expected an array of flashcards.');
             }
 
-            setFlashcards(data.flashcards);
+            setFlashcards(flashcards);
 
             if (saveFlashcardsAuto) {
-                await saveFlashcardsAuto(data.flashcards);
+                await saveFlashcardsAuto(flashcards);
             }
 
             setNotification({ message: 'Flashcards generated successfully!', type: 'success', show: true });
@@ -86,7 +88,6 @@ export default function Generate() {
             setLoading(false);
         }
     };
-
 
     const saveFlashcardsAuto = async (generatedFlashcards) => {
         if (!user) {
