@@ -13,8 +13,7 @@ const Notification = ({ message, type, show, onClose }) => {
         <div
             className={`fixed z-50 transition-all duration-500 ${show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
                 } ${
-                // Positioning and width classes
-                'bottom-4 left-1/2 transform -translate-x-1/2 w-11/12 sm:w-auto sm:top-5 sm:right-5 sm:left-auto sm:bottom-auto sm:transform-none'
+                'bottom-4 left-1/2 transform -translate-x-1/2 w-10/12 sm:w-auto sm:top-5 sm:right-5 sm:left-auto sm:bottom-auto sm:transform-none'
                 }`}
         >
             {message && (

@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 /* globals.css */
-/* Add this to your global CSS file */
 .flip-container {
   perspective: 1000px;
 }

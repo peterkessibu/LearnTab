@@ -134,7 +134,7 @@ export default function Generate() {
             <main className="flex-grow flex flex-col md:flex-row">
                 {/* Sidebar Toggle Icon (Visible only on mobile) */}
                 <button
-                    className={`fixed top-[72px] z-50 p-2 md:hidden bg-white text-[#0c0831] rounded-full shadow-lg transition-all duration-300 ${isSidebarOpen ? 'left-[calc(75vw-2rem)]' : 'left-2'
+                    className={`fixed top-[72px] z-50 p-2 md:hidden bg-white text-[#0c0831] rounded-full shadow-lg transition-all duration-400 ${isSidebarOpen ? 'left-[calc(75vw-2rem)]' : 'left-2'
                         }`}
                     onClick={() => setSidebarOpen(!isSidebarOpen)}
                 >
@@ -184,13 +184,12 @@ export default function Generate() {
                                 onClick={handleSubmit}
                                 disabled={loading}
                                 className={`w-full lg:w-1/2 py-2 px-3 text-white bg-white rounded-lg 
-        border-2 ${loading ? 'animate-gradient' : 'hover:animate-gradient'}
-        transition duration-500 ease-in-out relative z-0 overflow-hidden`}
+                                border-1 ${loading ? 'animate-gradient' : 'hover:animate-gradient'}
+                                transition duration-500 ease-in-out relative z-0 overflow-hidden`}
                             >
                                 <span className="relative z-10">{loading ? 'Generating...' : 'Generate Flashcards'}</span>
                                 <div className="absolute inset-0 rounded-lg border-gradient animate-gradient z-0"></div>
                             </button>
-
                         </div>
                         {flashcards.length > 0 && (
                             <div className="w-full grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4">
@@ -210,7 +209,7 @@ export default function Generate() {
                                         <div className={`flip-card ${flashcard.isFlipped ? 'flip' : ''}`}>
                                             <div className="front bg-white border rounded-b-lg border-gray-300 shadow-xl flex flex-col h-full">
                                                 <div className="flex-grow overflow-y-auto p-6 items-center justify-center shadow-xl">
-                                                    <p className='text-2xl text-center italic pt-6'>{flashcard.front}</p>
+                                                    <p className='text-2xl text-center italic pt-4'>{flashcard.front}</p>
                                                 </div>
                                                 <div className="text-center p-[4px] bg-[#0c0831] rounded-b-lg text-white border-t border-gray-300">
                                                     <p className="text-sm italic">Tap to Flip</p>
