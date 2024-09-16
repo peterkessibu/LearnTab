@@ -101,12 +101,12 @@ export default function Flashcard() {
                         >
                             {/* Front of the card */}
                             <div className="absolute w-full h-full bg-white backface-hidden flex items-center justify-center p-4">
-                                <h3 className="text-xl font-semibold">{flashcard.front}</h3>
+                                <h3 className="text-4xl font-semibold text-center">{flashcard.front}</h3>
                             </div>
 
                             {/* Back of the card */}
                             <div className="absolute w-full h-full bg-white backface-hidden transform rotate-y-180 flex items-center justify-center p-4">
-                                <h3 className="text-xl font-semibold">{flashcard.back}</h3>
+                                <h3 className="text-3xl font-semibold text-center">{flashcard.back}</h3>
                             </div>
                         </div>
                     </div>
