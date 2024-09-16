@@ -31,3 +31,30 @@
 .flip-card.flip {
   transform: rotateY(180deg);
 }
+.border-gradient {
+  border: 2px solid transparent;
+  background-image: linear-gradient(90deg, red, blue, yellow);
+  background-clip: border-box;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  padding: 2px;
+}
+
+@keyframes gradient-border-animation {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-border-animation 3s linear infinite;
+}
