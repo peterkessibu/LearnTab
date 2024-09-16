@@ -7,7 +7,7 @@ import { db } from '../firebase'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Notification from '../components/Notifications'
-import { MenuIcon } from '@heroicons/react/outline';
+import { MenuIcon } from '@heroicons/react/outline'
 
 // Function to sanitize the set name
 const sanitizeSetName = (name) => {
@@ -75,7 +75,6 @@ export default function Generate() {
             setLoading(false);
         }
     };
-
 
     const saveFlashcardsAuto = async (generatedFlashcards) => {
         if (!user) {
