@@ -17,7 +17,7 @@ export default function SignInPage() {
     }, [isSignedIn, router])
 
     return (
-        <div className="flex flex-col min-h-screen w-full bg-[#dedeff]">
+        <div className="flex flex-col min-h-screen w-full bg-[#e4e4f7]">
             {/* Navbar */}
             <nav className="w-full">
                 <div className="bg-[#0b1e36] p-4 w-full flex justify-center">

@@ -129,7 +129,7 @@ export default function Generate() {
     }
 
     return (
-        <div className="flex flex-col min-h-screen bg-[#dedeff]">
+        <div className="flex flex-col min-h-screen bg-[#e4e4f7]">
             <Header />
             <main className="flex-grow flex flex-col md:flex-row">
                 {/* Sidebar Toggle Icon (Visible only on mobile) */}
@@ -203,13 +203,21 @@ export default function Generate() {
                                         }}
                                     >
                                         <div className={`flip-card ${flashcard.isFlipped ? 'flip' : ''}`}>
-                                            <div className="front bg-white border border-gray-300 rounded-lg shadow-md p-4">
-                                                <h3 className="text-lg font-semibold">Front:</h3>
-                                                <p>{flashcard.front}</p>
+                                            <div className="front bg-white border rounded-b-lg border-gray-300 shadow-md flex flex-col h-full">
+                                                <div className="flex-grow overflow-y-auto p-6 items-center justify-center">
+                                                    <p className='text-xl text-center italic pt-6'>{flashcard.front}</p>
+                                                </div>
+                                                <div className="text-center p-[4px] bg-[#0c0831] rounded-b-lg text-white border-t border-gray-300">
+                                                    <p className="text-sm italic">Tap to Flip</p>
+                                                </div>
                                             </div>
-                                            <div className="back bg-white border border-gray-300 rounded-lg shadow-md p-4">
-                                                <h3 className="text-lg font-semibold">Back:</h3>
-                                                <p>{flashcard.back}</p>
+                                            <div className="back bg-white border rounded-b-lg border-gray-300 shadow-md flex flex-col h-full">
+                                                <div className="flex-grow overflow-y-auto p-2">
+                                                    <p className='text-lg italic'>{flashcard.back}</p>
+                                                </div>
+                                                <div className="text-center p-[4px] rounded-b-lg bg-[#0c0831] text-white border-t border-gray-300">
+                                                    <p className="text-sm italic">Tap to Flip</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
