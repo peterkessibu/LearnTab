@@ -1,4 +1,3 @@
-
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -9,11 +8,15 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import Notification from '../components/Notifications'
 
+// Function to sanitize the set name
+const sanitizeSetName = (name) => {
+    return name.replace(/[\/\[\]]/g, '_').trim();
+}
+
 export default function Generate() {
     const [text, setText] = useState('')
     const [flashcards, setFlashcards] = useState([])
     const [flashcardSets, setFlashcardSets] = useState([])
-    const [selectedSet, setSelectedSet] = useState(null)
     const [notification, setNotification] = useState({ message: '', type: '', show: false })
     const [loading, setLoading] = useState(false)
     const { user } = useUser()
@@ -36,32 +39,44 @@ export default function Generate() {
 
     const handleSubmit = async () => {
         if (!text.trim()) {
-            setNotification({ message: 'Please enter some text to generate flashcards.', type: 'error', show: true })
-            return
+            setNotification({ message: 'Please enter some text to generate flashcards.', type: 'error', show: true });
+            return;
         }
 
-        setLoading(true)
+        setLoading(true);
 
         try {
             const response = await fetch('/api/chat', {
                 method: 'POST',
                 body: JSON.stringify({ text }),
                 headers: { 'Content-Type': 'application/json' },
-            })
+            });
 
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-            const data = await response.json()
-            if (!Array.isArray(data)) throw new Error('Unexpected response format')
+            const data = await response.json();
 
-            setFlashcards(data)
-            await saveFlashcardsAuto(data)  // Automatically save flashcards
+            // Check if data.flashcards is an array before proceeding
+            if (!Array.isArray(data.flashcards)) {
+                throw new Error('Unexpected response format');
+            }
+
+            // Set the flashcards state with the fetched flashcards
+            setFlashcards(data.flashcards);
+
+            // Automatically save flashcards (if saveFlashcardsAuto exists)
+            if (saveFlashcardsAuto) {
+                await saveFlashcardsAuto(data.flashcards);
+            }
+
+            setNotification({ message: 'Flashcards generated successfully!', type: 'success', show: true });
         } catch (error) {
-            setNotification({ message: 'Error generating flashcards. Please try again.', type: 'error', show: true })
+            setNotification({ message: 'Error generating flashcards. Please try again.', type: 'error', show: true });
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
+
 
     const saveFlashcardsAuto = async (generatedFlashcards) => {
         if (!user) {
@@ -70,7 +85,8 @@ export default function Generate() {
         }
 
         const userId = user.id
-        const setName = `Set-${new Date().toISOString()}` // Automatically generate a set name
+        // Use the text as the set name and sanitize it
+        const setName = sanitizeSetName(text.trim());
 
         try {
             const userDocRef = doc(db, 'users', userId)
@@ -98,7 +114,6 @@ export default function Generate() {
 
         if (setDocSnap.exists()) {
             setFlashcards(JSON.parse(setDocSnap.data().flashcards))
-            setSelectedSet(setName)
         } else {
             setNotification({ message: 'Error fetching flashcards.', type: 'error', show: true })
         }
@@ -110,7 +125,7 @@ export default function Generate() {
             <main className="flex-grow flex">
                 <aside className="w-1/6 p-4 bg-[#ebecf5]">
                     <p className="text-lg font-semibold mb-4">LearnTab History</p>
-                    <hr class="border-gray-300 my-1" />
+                    <hr className="border-gray-300 my-1" />
                     <ul>
                         {flashcardSets.map((setName, index) => (
                             <li key={index} className="mb-2">
@@ -143,7 +158,6 @@ export default function Generate() {
                         >
                             {loading ? 'Generating...' : 'Generate Flashcards'}
                         </button>
-
                     </div>
                     {flashcards.length > 0 && (
                         <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4">
@@ -173,7 +187,6 @@ export default function Generate() {
                                 </div>
                             ))}
                         </div>
-
                     )}
                 </div>
             </main>
