@@ -1,43 +1,50 @@
-'use client'
+'use client';
 
-import { useState, useEffect, useCallback } from 'react'
-import { useUser } from '@clerk/nextjs'
-import { doc, collection, writeBatch, getDoc, getDocs } from 'firebase/firestore'
-import { db } from '../firebase'
-import Header from '../components/Header'
-import Footer from '../components/Footer'
-import Notification from '../components/Notifications'
-import { MenuIcon } from '@heroicons/react/outline'
+import { useState, useEffect, useCallback } from 'react';
+import { useUser } from '@clerk/nextjs';
+import { doc, collection, writeBatch, getDoc, getDocs } from 'firebase/firestore';
+import { db } from '../firebase';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import Notification from '../components/Notifications';
+import { MenuIcon, ArrowLeftIcon } from '@heroicons/react/outline'; // Import the left arrow icon
 
-// Function to sanitize the set name
 const sanitizeSetName = (name) => {
     return name.replace(/[\/\[\]]/g, '_').trim();
-}
+};
 
 export default function Generate() {
-    const [text, setText] = useState('')
-    const [flashcards, setFlashcards] = useState([])
-    const [flashcardSets, setFlashcardSets] = useState([])
-    const [notification, setNotification] = useState({ message: '', type: '', show: false })
-    const [loading, setLoading] = useState(false)
-    const { user } = useUser()
+    const [text, setText] = useState('');
+    const [flashcards, setFlashcards] = useState([]);
+    const [flashcardSets, setFlashcardSets] = useState([]);
+    const [notification, setNotification] = useState({ message: '', type: '', show: false });
+    const [loading, setLoading] = useState(false);
+    const { user } = useUser();
     const [isSidebarOpen, setSidebarOpen] = useState(false);
 
-    // Define fetchFlashcardSets before using it in useEffect
     const fetchFlashcardSets = useCallback(async () => {
-        if (!user) return
-        const userId = user.id
-        const userDocRef = doc(db, 'users', userId)
-        const flashcardSetsSnapshot = await getDocs(collection(userDocRef, 'flashcardSets'))
-        const sets = flashcardSetsSnapshot.docs.map(doc => doc.id)
-        setFlashcardSets(sets)
-    }, [user])
+        if (!user) return;
+        const userId = user.id;
+        const userDocRef = doc(db, 'users', userId);
+        const flashcardSetsSnapshot = await getDocs(collection(userDocRef, 'flashcardSets'));
+        const sets = flashcardSetsSnapshot.docs.map((doc) => doc.id);
+        setFlashcardSets(sets);
+    }, [user]);
 
     useEffect(() => {
         if (user) {
             fetchFlashcardSets();
         }
     }, [user, fetchFlashcardSets]);
+
+    // Disable body scroll when the sidebar is open
+    useEffect(() => {
+        if (isSidebarOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+    }, [isSidebarOpen]);
 
     const handleSubmit = async () => {
         if (!text.trim()) {
@@ -54,23 +61,15 @@ export default function Generate() {
                 headers: { 'Content-Type': 'application/json' },
             });
 
-            console.log('Response status:', response.status);
-
             if (!response.ok) {
                 const errorData = await response.json();
-                console.error('Error response:', errorData);
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
-
-            console.log('Response data:', data);
-
-            // Adjusting for nested response format
             const flashcards = data.flashcards.flashcards;
 
             if (!flashcards || !Array.isArray(flashcards)) {
-                console.error('Invalid response format:', data);
                 throw new Error('Unexpected response format. Expected an array of flashcards.');
             }
 
@@ -82,7 +81,6 @@ export default function Generate() {
 
             setNotification({ message: 'Flashcards generated successfully!', type: 'success', show: true });
         } catch (error) {
-            console.error('Error generating flashcards:', error);
             setNotification({ message: 'Error generating flashcards. Please try again.', type: 'error', show: true });
         } finally {
             setLoading(false);
@@ -91,42 +89,41 @@ export default function Generate() {
 
     const saveFlashcardsAuto = async (generatedFlashcards) => {
         if (!user) {
-            setNotification({ message: 'User not authenticated. Please sign in.', type: 'error', show: true })
-            return
+            setNotification({ message: 'User not authenticated. Please sign in.', type: 'error' });
+            return;
         }
 
-        const userId = user.id
+        const userId = user.id;
         const setName = sanitizeSetName(text.trim());
 
         try {
-            const userDocRef = doc(db, 'users', userId)
-            const batch = writeBatch(db)
+            const userDocRef = doc(db, 'users', userId);
+            const batch = writeBatch(db);
 
-            const setDocRef = doc(collection(userDocRef, 'flashcardSets'), setName)
-            batch.set(setDocRef, { flashcards: JSON.stringify(generatedFlashcards) })
+            const setDocRef = doc(collection(userDocRef, 'flashcardSets'), setName);
+            batch.set(setDocRef, { flashcards: JSON.stringify(generatedFlashcards) });
 
-            await batch.commit()
+            await batch.commit();
 
-            setFlashcardSets([...flashcardSets, setName])
-            setNotification({ message: 'Flashcards saved automatically!', type: 'success', show: true })
+            setFlashcardSets([...flashcardSets, setName]);
+            setNotification({ message: 'Flashcards saved automatically!', type: 'success' });
         } catch (error) {
-            console.error('Error saving flashcards:', error)
-            setNotification({ message: 'Error saving flashcards. Please try again.', type: 'error', show: true })
+            setNotification({ message: 'Error saving flashcards. Please try again.', type: 'error' });
         }
-    }
+    };
 
     const fetchFlashcards = async (setName) => {
-        if (!user) return
-        const userId = user.id
-        const setDocRef = doc(db, 'users', userId, 'flashcardSets', setName)
-        const setDocSnap = await getDoc(setDocRef)
+        if (!user) return;
+        const userId = user.id;
+        const setDocRef = doc(db, 'users', userId, 'flashcardSets', setName);
+        const setDocSnap = await getDoc(setDocRef);
 
         if (setDocSnap.exists()) {
-            setFlashcards(JSON.parse(setDocSnap.data().flashcards))
+            setFlashcards(JSON.parse(setDocSnap.data().flashcards));
         } else {
-            setNotification({ message: 'Error fetching flashcards.', type: 'error', show: true })
+            setNotification({ message: 'Error fetching flashcards.', type: 'error' });
         }
-    }
+    };
 
     return (
         <div className="flex flex-col min-h-screen bg-[#e4e4f7]">
@@ -134,17 +131,19 @@ export default function Generate() {
             <main className="flex-grow flex flex-col md:flex-row">
                 {/* Sidebar Toggle Icon (Visible only on mobile) */}
                 <button
-                    className={`fixed top-[72px] z-50 p-2 md:hidden bg-white text-[#0c0831] rounded-full shadow-lg transition-all duration-400 ${isSidebarOpen ? 'left-[calc(75vw-2rem)]' : 'left-2'
-                        }`}
+                    className={`fixed top-[72px] z-50 p-2 md:hidden bg-white text-[#0c0831] rounded-full shadow-lg transition-all duration-400 ${isSidebarOpen ? 'left-[calc(75vw-2rem)]' : 'left-2'}`}
                     onClick={() => setSidebarOpen(!isSidebarOpen)}
                 >
-                    <MenuIcon className="h-6 w-6" />
+                    {isSidebarOpen ? (
+                        <ArrowLeftIcon className="h-6 w-6" /> // Show left arrow when sidebar is open
+                    ) : (
+                        <MenuIcon className="h-6 w-6" /> // Show menu icon when sidebar is closed
+                    )}
                 </button>
 
                 {/* Sidebar */}
                 <aside
-                    className={`fixed md:sticky top-0 left-0 h-[calc(100vh-4rem)] md:h-screen w-3/4 sm:w-1/2 md:w-64 lg:w-1/5 bg-[#ebecf5] z-40 p-4 overflow-y-auto transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-                        } transition-transform duration-300 md:translate-x-0 mt-16 md:mt-0`}
+                    className={`fixed md:sticky top-1 left-0 h-[calc(100vh-4rem)] md:h-screen w-3/4 sm:w-1/2 md:w-64 lg:w-1/5 bg-[#ebecf5] z-40 p-4 overflow-y-auto transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 md:translate-x-0 mt-16 md:mt-0`}
                 >
                     <p className="text-base md:text-lg lg:text-lg font-semibold mb-4">LearnTab History</p>
                     <hr className="border-gray-300 my-1" />
@@ -161,7 +160,6 @@ export default function Generate() {
                                     {setName}
                                 </button>
                             </li>
-
                         ))}
                     </ul>
                 </aside>
@@ -239,5 +237,5 @@ export default function Generate() {
                 onClose={() => setNotification({ ...notification, show: false })}
             />
         </div>
-    )
+    );
 }

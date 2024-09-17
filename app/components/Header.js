@@ -33,14 +33,14 @@ export default function Navbar() {
                     <div className="flex items-center space-x-2 md:space-x-3">
                         {/* Profile Image (Hidden on small screens) */}
                         <Image
-                            src={user?.profileImageUrl || "/default-picture.svg"}
+                            src={user.profileImageUrl}
                             alt="Profile"
                             className="hidden sm:block rounded-full"
                             width={32}
                             height={32}
                         />
                         {/* User's Name */}
-                        <span className="text-sm sm:text-base">{user?.firstName}</span>
+                        <span className="text-sm sm:text-base">{user.firstName}</span>
                         {/* Log Out Button */}
                         <button
                             onClick={handleLogout}
