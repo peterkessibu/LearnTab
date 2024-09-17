@@ -62,7 +62,6 @@ export default function Generate() {
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
