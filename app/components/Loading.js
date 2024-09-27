@@ -12,7 +12,7 @@ const Loading = () => {
                 < l-newtons-cradle
                     size="100"
                     speed="1.4"
-                    color="blue"
+                    color="#1e3a8a"
                 ></l-newtons-cradle>
             </div>
     );
