@@ -16,6 +16,9 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <head>
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1599023620055809" crossorigin="anonymous"></script>
+        </head>
         <body>
           {children}
         </body>
