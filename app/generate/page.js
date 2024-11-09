@@ -9,19 +9,21 @@ import Footer from '../components/Footer';
 import Notification from '../components/Notifications';
 import { MenuIcon, ArrowLeftIcon } from '@heroicons/react/outline'; // Import the left arrow icon
 
+// Function to sanitize the set name by replacing certain characters
 const sanitizeSetName = (name) => {
     return name.replace(/[\/\[\]]/g, '_').trim();
 };
 
 export default function Generate() {
-    const [text, setText] = useState('');
-    const [flashcards, setFlashcards] = useState([]);
-    const [flashcardSets, setFlashcardSets] = useState([]);
-    const [notification, setNotification] = useState({ message: '', type: '', show: false });
-    const [loading, setLoading] = useState(false);
-    const { user } = useUser();
-    const [isSidebarOpen, setSidebarOpen] = useState(false);
+    const [text, setText] = useState(''); // State to hold the input text
+    const [flashcards, setFlashcards] = useState([]); // State to hold the generated flashcards
+    const [flashcardSets, setFlashcardSets] = useState([]); // State to hold the list of flashcard sets
+    const [notification, setNotification] = useState({ message: '', type: '', show: false }); // State for notifications
+    const [loading, setLoading] = useState(false); // State to indicate loading status
+    const { user } = useUser(); // Get the current user
+    const [isSidebarOpen, setSidebarOpen] = useState(false); // State to control sidebar visibility
 
+    // Function to fetch flashcard sets for the current user
     const fetchFlashcardSets = useCallback(async () => {
         if (!user) return;
         const userId = user.id;
@@ -31,6 +33,7 @@ export default function Generate() {
         setFlashcardSets(sets);
     }, [user]);
 
+    // Fetch flashcard sets when the user changes
     useEffect(() => {
         if (user) {
             fetchFlashcardSets();
@@ -46,6 +49,7 @@ export default function Generate() {
         }
     }, [isSidebarOpen]);
 
+    // Function to handle the submission of text to generate flashcards
     const handleSubmit = async () => {
         if (!text.trim()) {
             setNotification({ message: 'Please enter some text to generate flashcards.', type: 'error', show: true });
@@ -86,6 +90,7 @@ export default function Generate() {
         }
     };
 
+    // Function to automatically save generated flashcards to the database
     const saveFlashcardsAuto = async (generatedFlashcards) => {
         if (!user) {
             setNotification({ message: 'User not authenticated. Please sign in.', type: 'error' });
@@ -111,6 +116,7 @@ export default function Generate() {
         }
     };
 
+    // Function to fetch flashcards from a specific set
     const fetchFlashcards = async (setName) => {
         if (!user) return;
         const userId = user.id;
