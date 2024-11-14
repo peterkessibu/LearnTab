@@ -99,50 +99,31 @@ export default function HomePage() {
                 {[
                   {
                     word: "Apple",
-                    subtext: "for Apple",
                     image: "/image.png",
                   },
                   {
                     word: "Photosynthesis",
-                    subtext: "Biology",
                     image: "/Biologist-rafiki.svg",
                   },
                   {
                     word: "2+2=4",
-                    subtext: "Math",
                     image: "/Calculator-rafiki.svg",
                   },
                 ].map((card, index) => (
                   <div
                     key={index}
-                    className="flip-container p-6 rounded-xl bg-white shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
-                    onClick={() => {
-                      const updatedCards = [...cards];
-                      updatedCards[index].isFlipped = !updatedCards[index].isFlipped;
-                      setCards(updatedCards);
-                    }}
+                    className="p-6 rounded-xl bg-white shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
                   >
-                    <div className={`flip-card ${card.isFlipped ? "flip" : ""}`}>
-                      <div className="front">
-                        <Image
-                          src={card.image}
-                          alt={card.word}
-                          width={200}
-                          height={200}
-                          className="mx-auto mb-4 rounded-lg"
-                        />
-                        <p className="text-3xl md:text-4xl font-bold text-center text-indigo-600 mb-2">
-                          {card.word}
-                        </p>
-                        <div className="tap-to-flip">Tap to Flip</div>
-                      </div>
-                      <div className="back">
-                        <p className="text-3xl md:text-4xl font-bold text-center text-indigo-600 mb-2">
-                          {card.subtext}
-                        </p>
-                        <div className="tap-to-flip">Tap to Flip</div>
-                      </div>
-                    </div>
+                    <Image
+                      src={card.image}
+                      alt={card.word}
+                      width={200}
+                      height={200}
+                      className="mx-auto mb-4 rounded-lg"
+                    />
+                    <p className="text-3xl md:text-4xl font-bold text-center text-indigo-600 mb-2">
+                      {card.word}
+                    </p>
                   </div>
                 ))}
               </div>
