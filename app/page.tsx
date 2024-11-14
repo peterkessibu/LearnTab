@@ -105,12 +105,12 @@ export default function HomePage() {
                   {
                     word: "Photosynthesis",
                     subtext: "Biology",
-                    image: "/placeholder.svg?height=200&width=200",
+                    image: "/Biologist-rafiki.svg",
                   },
                   {
                     word: "2+2=4",
                     subtext: "Math",
-                    image: "/learning_maths.svg",
+                    image: "/Calculator-rafiki.svg",
                   },
                 ].map((card, index) => (
                   <div
