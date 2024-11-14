@@ -34,7 +34,7 @@ export async function POST(req) {
           role: "user",
           parts: [
             {
-              text: `You are a professional flashcard generator. Given a piece of text, identify the key subject matter and create exactly 10 concise and informative flashcards from it. Each flashcard should contain the following:
+              text: `You are a professional flashcard generator. Given a piece of text, identify the key subject matter and create the flashcards based on the information needed, it should be more than 4 but less than 15 concise and informative flashcards from it. Each flashcard should contain the following:
 
 Front: A brief and clear topic sentence that highlights a key concept or question.
 Back: A concise answer or explanation in less than 3 lines of text and should not overflow on the card generated, offering clear insights into the topic.
