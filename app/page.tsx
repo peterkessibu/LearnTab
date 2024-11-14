@@ -110,7 +110,7 @@ export default function HomePage() {
                   {
                     word: "2+2=4",
                     subtext: "Math",
-                    image: "/placeholder.svg?height=200&width=200",
+                    image: "/learning_maths.svg",
                   },
                 ].map((card, index) => (
                   <div
