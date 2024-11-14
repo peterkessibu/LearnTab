@@ -98,9 +98,9 @@ export default function HomePage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {[
                   {
-                    word: "A",
+                    word: "Apple",
                     subtext: "for Apple",
-                    image: "/placeholder.svg?height=200&width=200",
+                    image: "/image.png",
                   },
                   {
                     word: "Photosynthesis",
@@ -115,21 +115,34 @@ export default function HomePage() {
                 ].map((card, index) => (
                   <div
                     key={index}
-                    className="p-6 rounded-xl bg-white shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
+                    className="flip-container p-6 rounded-xl bg-white shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1"
+                    onClick={() => {
+                      const updatedCards = [...cards];
+                      updatedCards[index].isFlipped = !updatedCards[index].isFlipped;
+                      setCards(updatedCards);
+                    }}
                   >
-                    <Image
-                      src={card.image}
-                      alt={card.word}
-                      width={200}
-                      height={200}
-                      className="mx-auto mb-4 rounded-lg"
-                    />
-                    <p className="text-3xl md:text-4xl font-bold text-center text-indigo-600 mb-2">
-                      {card.word}
-                    </p>
-                    <p className="text-lg text-center text-gray-600">
-                      {card.subtext}
-                    </p>
+                    <div className={`flip-card ${card.isFlipped ? "flip" : ""}`}>
+                      <div className="front">
+                        <Image
+                          src={card.image}
+                          alt={card.word}
+                          width={200}
+                          height={200}
+                          className="mx-auto mb-4 rounded-lg"
+                        />
+                        <p className="text-3xl md:text-4xl font-bold text-center text-indigo-600 mb-2">
+                          {card.word}
+                        </p>
+                        <div className="tap-to-flip">Tap to Flip</div>
+                      </div>
+                      <div className="back">
+                        <p className="text-3xl md:text-4xl font-bold text-center text-indigo-600 mb-2">
+                          {card.subtext}
+                        </p>
+                        <div className="tap-to-flip">Tap to Flip</div>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>

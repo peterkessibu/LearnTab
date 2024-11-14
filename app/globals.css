@@ -30,6 +30,7 @@
 .flip-card.flip {
   transform: rotateY(180deg);
 }
+
 .border-gradient {
   border: 2px solid transparent;
   background-image: linear-gradient(90deg, red, blue, yellow);
@@ -56,4 +57,18 @@
 .animate-gradient {
   background-size: 200% 200%;
   animation: gradient-border-animation 3s linear infinite;
+}
+
+/* New CSS for tap to flip indication */
+.tap-to-flip {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 12px;
+  text-align: center;
 }
