@@ -1,5 +1,3 @@
-
-
 # LearnTab
 
 LearnTab is a web application designed to help users create, manage, and review flashcards. It offers a modern interface with responsive design and various features to enhance the flashcard creation experience.
@@ -23,12 +21,14 @@ LearnTab is a web application designed to help users create, manage, and review 
 ## Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/peterkessibu/LearnTab.git
    cd flashcard-generator
    ```
 
 2. Install the dependencies:
+
    ```bash
    npm install
    # or
@@ -36,10 +36,12 @@ LearnTab is a web application designed to help users create, manage, and review 
    ```
 
 3. Set up Firebase and Clerk:
+
    - Create a Firebase project at [Firebase Console](https://console.firebase.google.com/).
    - Set up Firestore and configure your security rules.
    - Create a Clerk account and set up your application.
    - Add your Firebase and Clerk configuration to a `.env.local` file:
+
      ```env
      NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
      NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
@@ -54,6 +56,7 @@ LearnTab is a web application designed to help users create, manage, and review 
      ```
 
 4. Run the development server:
+
    ```bash
    npm run dev
    # or
@@ -69,7 +72,5 @@ LearnTab is a web application designed to help users create, manage, and review 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-
 
 Make sure to replace placeholders like repository links and Firebase/Clerk configuration values with your actual information. Adjust any other sections as needed for your project.

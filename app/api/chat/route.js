@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 const genAI = new GoogleGenerativeAI(apiKey);
@@ -21,7 +21,10 @@ export async function POST(req) {
     const { text } = await req.json();
 
     if (!text) {
-      return NextResponse.json({ message: 'Text is required' }, { status: 400 });
+      return NextResponse.json(
+        { message: "Text is required" },
+        { status: 400 },
+      );
     }
 
     const chatSession = model.startChat({
@@ -48,10 +51,10 @@ The final output should be formatted as a JSON object structured in a way that a
     ]
   }
 }
-Ensure each flashcard is well-structured, informative, and concise, covering essential information on the topic.`
-            }
+Ensure each flashcard is well-structured, informative, and concise, covering essential information on the topic.`,
+            },
           ],
-        }
+        },
       ],
     });
 
@@ -64,19 +67,27 @@ Ensure each flashcard is well-structured, informative, and concise, covering ess
       const parsedResponse = JSON.parse(responseText);
 
       // Ensure the response format is { "flashcards": { "flashcards": [...] } }
-      if (parsedResponse.flashcards && Array.isArray(parsedResponse.flashcards.flashcards)) {
+      if (
+        parsedResponse.flashcards &&
+        Array.isArray(parsedResponse.flashcards.flashcards)
+      ) {
         flashcards = parsedResponse.flashcards.flashcards;
       } else {
-        throw new Error('Unexpected response format. Expected an array of flashcards.');
+        throw new Error(
+          "Unexpected response format. Expected an array of flashcards.",
+        );
       }
     } catch (e) {
-      console.error('Error parsing JSON:', e);
-      throw new Error('Error parsing flashcards JSON.');
+      console.error("Error parsing JSON:", e);
+      throw new Error("Error parsing flashcards JSON.");
     }
 
     return NextResponse.json({ flashcards: { flashcards } });
   } catch (error) {
-    console.error('Error in /api/chat:', error);
-    return NextResponse.json({ message: 'Internal server error', error: error.message }, { status: 500 });
+    console.error("Error in /api/chat:", error);
+    return NextResponse.json(
+      { message: "Internal server error", error: error.message },
+      { status: 500 },
+    );
   }
 }
