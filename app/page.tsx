@@ -7,14 +7,13 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import dynamic from "next/dynamic";
 import { Star, Users, Zap } from "lucide-react";
-import FlashcardSection from './components/FlashcardSection'
+import FlashcardSection from "./components/FlashcardSection";
 
 export default function HomePage() {
   const { isSignedIn, user } = useUser(); // Get the current user and their sign-in status
   const [isLoading, setIsLoading] = useState(true); // State to manage loading status
   const Loading = dynamic(() => import("./components/Loading"), { ssr: false }); // Dynamically import the Loading component
   const [buttonText, setButtonText] = useState("Get Started with LearnTab"); // State to manage button text
-
 
   // useEffect to simulate loading state
   useEffect(() => {
