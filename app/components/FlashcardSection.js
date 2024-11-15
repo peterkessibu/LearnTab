@@ -34,7 +34,7 @@ const FlashcardSection = () => {
       {/* Flashcards Section */}
       <section className="pt-6 pb-10">
         <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
+          <h2 className="text-xl md:text-3xl font-bold text-center text-gray-800 mb-8">
             Flashcards for Every Learner
           </h2>
           <div className="w-full grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4">

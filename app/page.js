@@ -27,9 +27,13 @@ export default function HomePage() {
 
   // Redirect to /generate if signed in
   useEffect(() => {
-    if (isSignedIn) {
-      router.push("/generate");
-    }
+    const checkSignInStatus = async () => {
+      if (isSignedIn) {
+        await router.push("/generate");
+      }
+    };
+
+    checkSignInStatus();
   }, [isSignedIn, router]);
 
   // Handle button click
@@ -65,7 +69,7 @@ export default function HomePage() {
             <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
               Learn Anything with LearnTab
             </h1>
-            <p className="text-xl md:text-2xl text-gray-600 mb-4">
+            <p className="text-base md:text-xl text-gray-600 mb-4">
               Powerful flashcards for learners of all ages
               <br />
               Boost your learning with flashcards designed for every subject!
@@ -88,7 +92,7 @@ export default function HomePage() {
           <section className="py-12">
             <div className="container mx-auto px-4">
               <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-                Why Choose FlashMaster?
+                Why Choose LearnTab?
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                 {[
