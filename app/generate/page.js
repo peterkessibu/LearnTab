@@ -210,8 +210,11 @@ export default function Generate() {
         <div className="flex-grow flex flex-col items-center w-full md:w-4/5 p-4 mt-4">
           <div className="w-full max-w-4xl">
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 text-center">
-              Generate Flashcards
+              AI Generated Flashcards
             </h1>
+            <p className="text-base italic text-center mb-4 md:w-1/2">
+              Ask questions on Topics you are eager to learn about from Math, Science, History, Literature to advance topics like Business, Technical and Medicine to Language learning.
+            </p>
             <div className="flex flex-col items-center">
               <textarea
                 value={text}
@@ -234,7 +237,7 @@ export default function Generate() {
               </button>
             </div>
             {flashcards.length > 0 && (
-              <div className="w-full grid gap-2 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-4">
+              <div className="w-full grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mt-8">
                 {flashcards.map((flashcard, index) => (
                   <div
                     key={index}
@@ -248,24 +251,22 @@ export default function Generate() {
                       setFlashcards(updatedFlashcards);
                     }}
                   >
-                    <div
-                      className={`flip-card ${flashcard.isFlipped ? "flip" : ""}`}
-                    >
-                      <div className="front bg-white border rounded-b-lg border-gray-300 shadow-xl flex flex-col h-full">
+                    <div className={`flip-card ${flashcard.isFlipped ? "flip" : ""}`}>
+                      <div className="front bg-white border rounded-lg border-gray-300 shadow-xl flex flex-col h-full">
                         <div className="flex-grow overflow-y-auto p-6 items-center justify-center shadow-xl">
                           <p className="text-2xl text-center italic pt-4">
                             {flashcard.front}
                           </p>
                         </div>
-                        <div className="text-center p-[4px] bg-[#0c0831] rounded-b-lg text-white border-t border-gray-300">
+                        <div className="text-center p-2 bg-[#0c0831] rounded-b-lg text-white border-t border-gray-300">
                           <p className="text-sm italic">Tap to Flip</p>
                         </div>
                       </div>
-                      <div className="back bg-white border rounded-b-lg border-gray-300 shadow-xl flex flex-col h-full">
-                        <div className="flex-grow overflow-y-auto p-2 shadow-xl">
+                      <div className="back bg-white border rounded-lg border-gray-300 shadow-xl flex flex-col h-full">
+                        <div className="flex-grow overflow-y-auto p-6 shadow-xl">
                           <p className="text-lg italic">{flashcard.back}</p>
                         </div>
-                        <div className="text-center p-[4px] rounded-b-lg bg-[#0c0831] text-white border-t border-gray-300">
+                        <div className="text-center p-2 bg-[#0c0831] rounded-b-lg text-white border-t border-gray-300">
                           <p className="text-sm italic">Tap to Flip</p>
                         </div>
                       </div>

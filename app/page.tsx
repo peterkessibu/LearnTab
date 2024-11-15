@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useUser } from "@clerk/nextjs";
 import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -10,7 +9,6 @@ import { Star, Users, Zap } from "lucide-react";
 import FlashcardSection from "./components/FlashcardSection";
 
 export default function HomePage() {
-  const { isSignedIn, user } = useUser(); // Get the current user and their sign-in status
   const [isLoading, setIsLoading] = useState(true); // State to manage loading status
   const Loading = dynamic(() => import("./components/Loading"), { ssr: false }); // Dynamically import the Loading component
   const [buttonText, setButtonText] = useState("Get Started with LearnTab"); // State to manage button text
@@ -51,29 +49,15 @@ export default function HomePage() {
       <Header /> {/* Header component */}
       {/* Main Content Area */}
       <div className="flex-grow container mx-auto">
-        {isSignedIn ? (
-          <div className="text-center m-4">
-            <p className="text-xl font-semibold">
-              Welcome back, {user.firstName}!
-            </p>
-            <p className="text-center text-lg mb-4">
-              Boost your learning with flashcards designed for every subject!
-            </p>
-            <Link
-              href="/generate"
-              className="inline-block bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700"
-            >
-              View My Flashcards
-            </Link>
-          </div>
-        ) : (
           <div className="text-center">
             <section className="container mx-auto px-4 py-12 text-center">
               <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
                 Learn Anything with LearnTab
               </h1>
-              <p className="text-xl md:text-2xl text-gray-600 mb-8">
+              <p className="text-xl md:text-2xl text-gray-600 mb-4">
                 Powerful flashcards for learners of all ages
+                <br/>
+                  Boost your learning with flashcards designed for every subject!
               </p>
               <button onClick={handleClick}>
                 <Link
@@ -85,8 +69,6 @@ export default function HomePage() {
               </button>
             </section>
           </div>
-        )}
-
         <main>
           {/* Flashcards Section */}
           <FlashcardSection />
@@ -132,25 +114,6 @@ export default function HomePage() {
                   </div>
                 ))}
               </div>
-            </div>
-          </section>
-
-          {/* Call to Action Section */}
-          <section className="py-12">
-            <div className="container mx-auto px-4 text-center">
-              <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                Ready to Start Learning?
-              </h2>
-              <p className="text-xl text-gray-600 mb-8">
-                Join thousands of learners improving their skills with
-                FlashMaster
-              </p>
-              <Link
-                href="#"
-                className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white text-xl font-semibold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
-              >
-                Create Your First Flashcard
-              </Link>
             </div>
           </section>
         </main>
