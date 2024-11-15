@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import dynamic from "next/dynamic";
@@ -12,6 +14,8 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true); // State to manage loading status
   const Loading = dynamic(() => import("./components/Loading"), { ssr: false }); // Dynamically import the Loading component
   const [buttonText, setButtonText] = useState("Get Started with LearnTab"); // State to manage button text
+  const { isSignedIn } = useAuth();
+  const router = useRouter();
 
   // useEffect to simulate loading state
   useEffect(() => {
@@ -20,6 +24,13 @@ export default function HomePage() {
     }, 2450);
     return () => clearTimeout(timer); // Cleanup the timer on component unmount
   }, []);
+
+  // Redirect to /generate if signed in
+  useEffect(() => {
+    if (isSignedIn) {
+      router.push("/generate");
+    }
+  }, [isSignedIn, router]);
 
   // Handle button click
   const handleClick = () => {
@@ -49,26 +60,26 @@ export default function HomePage() {
       <Header /> {/* Header component */}
       {/* Main Content Area */}
       <div className="flex-grow container mx-auto">
-          <div className="text-center">
-            <section className="container mx-auto px-4 py-12 text-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-                Learn Anything with LearnTab
-              </h1>
-              <p className="text-xl md:text-2xl text-gray-600 mb-4">
-                Powerful flashcards for learners of all ages
-                <br/>
-                  Boost your learning with flashcards designed for every subject!
-              </p>
-              <button onClick={handleClick}>
-                <Link
-                  href={"/sign-up"}
-                  className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white text-xl md:text-2xl font-semibold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
-                >
-                  {buttonText}
-                </Link>
-              </button>
-            </section>
-          </div>
+        <div className="text-center">
+          <section className="container mx-auto px-4 py-12 text-center">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+              Learn Anything with LearnTab
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-600 mb-4">
+              Powerful flashcards for learners of all ages
+              <br />
+              Boost your learning with flashcards designed for every subject!
+            </p>
+            <button onClick={handleClick}>
+              <Link
+                href={"/sign-up"}
+                className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white text-lg md:text-xl font-semibold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105"
+              >
+                {buttonText}
+              </Link>
+            </button>
+          </section>
+        </div>
         <main>
           {/* Flashcards Section */}
           <FlashcardSection />

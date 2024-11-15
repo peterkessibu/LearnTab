@@ -212,7 +212,7 @@ export default function Generate() {
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 text-center">
               AI Generated Flashcards
             </h1>
-            <p className="text-base italic text-center mb-4 md:w-1/2">
+            <p className="text-base italic text-center mx-auto mb-4 md:w-1/2">
               Ask questions on Topics you are eager to learn about from Math, Science, History, Literature to advance topics like Business, Technical and Medicine to Language learning.
             </p>
             <div className="flex flex-col items-center">

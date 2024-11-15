@@ -28,6 +28,6 @@
     ".next/types/**/*.ts",
     "app/api/chat/route.js",
     "app/components/Loading.js"
-  ],
+, "app/page.js"  ],
   "exclude": ["node_modules"]
 }

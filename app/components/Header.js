@@ -3,7 +3,6 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import { useUser, useAuth } from "@clerk/nextjs";
 
 export default function Navbar() {
@@ -31,16 +30,8 @@ export default function Navbar() {
       <div className="flex items-center space-x-2 md:space-x-4">
         {isSignedIn ? (
           <div className="flex items-center space-x-2 md:space-x-3">
-            {/* Profile Image (Hidden on small screens) */}
-            <Image
-              src={user.profileImageUrl}
-              alt="Profile"
-              className="hidden sm:block rounded-full"
-              width={32}
-              height={32}
-            />
             {/* User's Name */}
-            <span className="text-sm sm:text-base">{user.firstName}</span>
+            <span className="text-sm sm:text-base">{user.firstName || user.username}</span>
             {/* Log Out Button */}
             <button
               onClick={handleLogout}
@@ -52,14 +43,14 @@ export default function Navbar() {
         ) : (
           <>
             <Link
-              href="/sign-in"
+              href={'/sign-in'}
               className="bg-white text-[#0d0c47] py-1 px-2 sm:py-1 sm:px-4 rounded-lg"
             >
               Sign In
             </Link>
             <Link
-              href="/sign-up"
-              className="text-white py-1 px-2 sm:py-1 sm:px-4 rounded-lg"
+              href={'sign-up'}
+                className="text-white border border-white py-1 px-2 sm:py-1 sm:px-4 rounded-lg"
             >
               Sign Up
             </Link>
