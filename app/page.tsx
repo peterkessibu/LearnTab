@@ -7,14 +7,14 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import dynamic from "next/dynamic";
 import { Star, Users, Zap } from "lucide-react";
-import Image from "next/image";
+import FlashcardSection from './components/FlashcardSection'
 
 export default function HomePage() {
   const { isSignedIn, user } = useUser(); // Get the current user and their sign-in status
   const [isLoading, setIsLoading] = useState(true); // State to manage loading status
   const Loading = dynamic(() => import("./components/Loading"), { ssr: false }); // Dynamically import the Loading component
   const [buttonText, setButtonText] = useState("Get Started with LearnTab"); // State to manage button text
-  const [flipped, setFlipped] = useState([false, false, false]);
+
 
   // useEffect to simulate loading state
   useEffect(() => {
@@ -24,13 +24,6 @@ export default function HomePage() {
     return () => clearTimeout(timer); // Cleanup the timer on component unmount
   }, []);
 
-  const handleFlip = (index: number): void => {
-    setFlipped((prev: boolean[]): boolean[] => {
-      const newFlipped = [...prev];
-      newFlipped[index] = !newFlipped[index];
-      return newFlipped;
-    });
-  };
   // Handle button click
   const handleClick = () => {
     setButtonText("Getting ready..."); // Update button text
@@ -97,60 +90,7 @@ export default function HomePage() {
 
         <main>
           {/* Flashcards Section */}
-         <section className="pt-6 pb-10">
-  <div className="container mx-auto px-4">
-    <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
-      Flashcards for Every Learner
-    </h2>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {[
-        {
-          word: "Apple",
-          subtext: "for Apple",
-          image: "/image.png",
-        },
-        {
-          word: "Tech",
-          subtext: "Information Technology",
-          image: "/Researching-amico.svg",
-        },
-        {
-          word: "2+2=4",
-          subtext: "Math",
-          image: "/Calculator-rafiki.svg",
-        },
-      ].map((card, index) => (
-        <div
-          key={index}
-          className="flip-container rounded-xl bg-white shadow-md hover:shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 pt-4"
-          onClick={() => handleFlip(index)}
-        >
-          <div className={`flip-card ${flipped[index] ? "flip" : ""}`}>
-            <div className="front p-4 rounded-lg">
-              <Image
-                src={card.image}
-                alt={card.word}
-                width={200}
-                height={200}
-                className="mx-auto mb-4 rounded-lg"
-              />
-              <p className="text-3xl md:text-4xl font-bold text-center text-indigo-600 mb-2">
-                {card.word}
-              </p>
-              <div className="tap-to-flip">Tap to Flip</div>
-            </div>
-            <div className="back p-4 rounded-lg">
-              <p className="text-3xl md:text-4xl font-bold text-center text-indigo-600 mb-2">
-                {card.subtext}
-              </p>
-              <div className="tap-to-flip">Tap to Flip</div>
-            </div>
-          </div>
-        </div>
-      ))}
-    </div>
-  </div>
-</section>
+          <FlashcardSection />
 
           {/* Features Section */}
           <section className="py-12">
@@ -158,39 +98,41 @@ export default function HomePage() {
               <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">
                 Why Choose FlashMaster?
               </h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
                 {[
                   {
-                  icon: Star,
-                  title: "Engaging Content",
-                  description: "From simple to advanced topics",
-                  color: "text-yellow-400",
+                    icon: Star,
+                    title: "Engaging Content",
+                    description: "From simple to advanced topics",
+                    color: "text-yellow-400",
                   },
                   {
-                  icon: Users,
-                  title: "For All Ages",
-                  description: "Suitable for kids and adults alike",
-                  color: "text-blue-800",
+                    icon: Users,
+                    title: "For All Ages",
+                    description: "Suitable for kids and adults alike",
+                    color: "text-blue-800",
                   },
                   {
-                  icon: Zap,
-                  title: "Boost Learning",
-                  description: "Improve retention and recall",
-                  color: "text-yellow-400",
+                    icon: Zap,
+                    title: "Boost Learning",
+                    description: "Improve retention and recall",
+                    color: "text-yellow-400",
                   },
                 ].map((feature, index) => (
                   <div
-                  key={index}
-                  className="bg-white p-6 rounded-xl shadow-md"
+                    key={index}
+                    className="bg-white p-6 rounded-xl shadow-md"
                   >
-                  <feature.icon className={`h-12 w-12 ${feature.color} mx-auto mb-4`} />
-                  <h3 className="text-xl font-bold text-gray-800 mb-2">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600">{feature.description}</p>
+                    <feature.icon
+                      className={`h-12 w-12 ${feature.color} mx-auto mb-4`}
+                    />
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600">{feature.description}</p>
                   </div>
                 ))}
-                </div>
+              </div>
             </div>
           </section>
 
