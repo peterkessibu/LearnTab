@@ -65,7 +65,7 @@ const FlashcardSection = () => {
                     </div>
                   </div>
                   <div className="back bg-white border rounded-b-lg border-gray-300 shadow-xl flex flex-col h-full">
-                    <div className="flex-grow overflow-y-auto p-2 shadow-xl">
+                    <div className="flex-grow overflow-y-auto p-4 shadow-xl">
                       <p className="text-lg italic">{flashcard.back}</p>
                     </div>
                     <div className="text-center p-[4px] rounded-b-lg bg-[#0c0831] text-white border-t border-gray-300">

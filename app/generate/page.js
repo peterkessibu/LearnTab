@@ -213,7 +213,7 @@ export default function Generate() {
               AI Generated Flashcards
             </h1>
             <p className="text-base italic text-center mx-auto mb-4 md:w-1/2">
-              Ask questions on Topics you are eager to learn about from Math, Science, History, Literature to advance topics like Business, Technical and Medicine to Language learning.
+              Ask questions to improve your learning experience on a variety of subjects, including business, technical, medicine, literature, science, math, and language.
             </p>
             <div className="flex flex-col items-center">
               <textarea
