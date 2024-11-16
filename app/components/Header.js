@@ -1,21 +1,24 @@
-// components/Navbar.js
 "use client";
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useUser, useAuth } from "@clerk/nextjs";
+import { useState } from "react";
 
 export default function Navbar() {
   const { isSignedIn, user } = useUser();
   const { signOut } = useAuth();
   const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
+    setIsLoggingOut(true);
     try {
       await signOut();
       router.push("/");
     } catch (error) {
       console.error("Error logging out:", error);
+      setIsLoggingOut(false);
     }
   };
 
@@ -28,33 +31,35 @@ export default function Navbar() {
 
       {/* Authenticated & Unauthenticated Links */}
       <div className="flex items-center space-x-2 md:space-x-4">
-        {isSignedIn ? (
+        {isSignedIn && !isLoggingOut ? (
           <div className="flex items-center space-x-2 md:space-x-3">
             {/* User's Name */}
             <span className="text-sm sm:text-base">{user.firstName || user.username}</span>
             {/* Log Out Button */}
             <button
               onClick={handleLogout}
-              className="text-[#09172b] bg-white border-[1px] border-white p-1 sm:p-2 rounded-lg"
+              className="text-sm sm:text-base bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded"
             >
               Log Out
             </button>
           </div>
         ) : (
-          <>
-            <Link
-              href={'/sign-in'}
-              className="bg-white text-[#0d0c47] py-1 px-2 sm:py-1 sm:px-4 rounded-lg"
-            >
-              Sign In
-            </Link>
-            <Link
-              href={'sign-up'}
-                className="text-white border border-white py-1 px-2 sm:py-1 sm:px-4 rounded-lg"
-            >
-              Sign Up
-            </Link>
-          </>
+          !isLoggingOut && (
+            <div className="flex items-center space-x-2 md:space-x-4">
+                <Link
+                  href={'/sign-in'}
+                  className="bg-white text-[#0d0c47] py-1 px-2 sm:py-1 sm:px-4 rounded-lg"
+                >
+                  Sign In
+                </Link>
+                <Link
+                  href={'sign-up'}
+                  className="text-white border border-white py-1 px-2 sm:py-1 sm:px-4 rounded-lg"
+                >
+                  Sign Up
+                </Link>
+            </div>
+          )
         )}
       </div>
     </nav>
