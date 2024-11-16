@@ -21,6 +21,10 @@ export default function Navbar() {
       setIsLoggingOut(false);
     }
   };
+  const capitalize = (str) => {
+    if (!str) return "";
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  };
 
   return (
     <nav className="flex justify-between items-center bg-[#0b1e36] text-white p-4 md:p-6">
@@ -33,8 +37,9 @@ export default function Navbar() {
       <div className="flex items-center space-x-2 md:space-x-4">
         {isSignedIn && !isLoggingOut ? (
           <div className="flex items-center space-x-2 md:space-x-3">
-            {/* User's Name */}
-            <span className="text-sm sm:text-base">{user.firstName || user.username}</span>
+            <span className="text-sm sm:text-base">
+              Hello {capitalize(user.firstName) || capitalize(user.username)}!
+            </span>
             {/* Log Out Button */}
             <button
               onClick={handleLogout}
