@@ -13,7 +13,7 @@ import { db } from "../firebase";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import Notification from "../components/Notifications";
-import { MenuIcon, ArrowLeftIcon } from "@heroicons/react/outline"; // Import the left arrow icon
+import { MenuIcon, ArrowLeftIcon } from "@heroicons/react/outline";
 
 // Function to sanitize the set name by replacing certain characters
 const sanitizeSetName = (name) => {
@@ -21,17 +21,17 @@ const sanitizeSetName = (name) => {
 };
 
 export default function Generate() {
-  const [text, setText] = useState(""); // State to hold the input text
-  const [flashcards, setFlashcards] = useState([]); // State to hold the generated flashcards
-  const [flashcardSets, setFlashcardSets] = useState([]); // State to hold the list of flashcard sets
+  const [text, setText] = useState("");
+  const [flashcards, setFlashcards] = useState([]);
+  const [flashcardSets, setFlashcardSets] = useState([]);
   const [notification, setNotification] = useState({
     message: "",
     type: "",
     show: false,
   }); // State for notifications
-  const [loading, setLoading] = useState(false); // State to indicate loading status
+  const [loading, setLoading] = useState(false);
   const { user } = useUser(); // Get the current user
-  const [isSidebarOpen, setSidebarOpen] = useState(false); // State to control sidebar visibility
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   // Function to fetch flashcard sets for the current user
   const fetchFlashcardSets = useCallback(async () => {
@@ -213,7 +213,9 @@ export default function Generate() {
               AI Generated Flashcards
             </h1>
             <p className="text-base italic text-center mx-auto mb-4 md:w-1/2">
-              Ask questions to improve your learning experience on a variety of subjects, including business, technical, medicine, literature, science, math, and language.
+              Ask questions to improve your learning experience on a variety of
+              subjects, including business, technical, medicine, literature,
+              science, math, and language.
             </p>
             <div className="flex flex-col items-center">
               <textarea
@@ -251,7 +253,9 @@ export default function Generate() {
                       setFlashcards(updatedFlashcards);
                     }}
                   >
-                    <div className={`flip-card ${flashcard.isFlipped ? "flip" : ""}`}>
+                    <div
+                      className={`flip-card ${flashcard.isFlipped ? "flip" : ""}`}
+                    >
                       <div className="front bg-white border rounded-lg border-gray-300 shadow-xl flex flex-col h-full">
                         <div className="flex-grow overflow-y-auto p-6 items-center justify-center shadow-xl">
                           <p className="text-2xl text-center italic pt-4">

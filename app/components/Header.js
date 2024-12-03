@@ -51,18 +51,18 @@ export default function Navbar() {
         ) : (
           !isLoggingOut && (
             <div className="flex items-center space-x-2 md:space-x-4">
-                <Link
-                  href={'/sign-in'}
-                  className="bg-white text-[#0d0c47] py-1 px-2 sm:py-1 sm:px-4 rounded-lg"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href={'sign-up'}
-                  className="text-white border border-white py-1 px-2 sm:py-1 sm:px-4 rounded-lg"
-                >
-                  Sign Up
-                </Link>
+              <Link
+                href={"/sign-in"}
+                className="bg-white text-[#0d0c47] py-1 px-2 sm:py-1 sm:px-4 rounded-lg"
+              >
+                Sign In
+              </Link>
+              <Link
+                href={"sign-up"}
+                className="text-white border border-white py-1 px-2 sm:py-1 sm:px-4 rounded-lg"
+              >
+                Sign Up
+              </Link>
             </div>
           )
         )}
